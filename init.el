@@ -34,6 +34,7 @@
       ;;         cmake-mode
       ;;         company
       ;;         zenburn-theme
+;; highlight-numbers
       ;;         ;; flycheck-haskell
       ;;         ;; haskell-mode
       ;;         ))
@@ -48,15 +49,17 @@
 
 ;; appearance
 (add-to-list 'custom-theme-load-path "~/.emacs.d/themes/")
-(when (display-graphic-p)
-    (load-theme 'zenburn t))
+(if (display-graphic-p)
+    (load-theme 'zenburn t)
+  (load-theme 'zenburn-tty t))
 
 (global-hl-line-mode 1)
 (setq inhibit-startup-message t)
 (if (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
 (if (fboundp 'tool-bar-mode) (tool-bar-mode -1))
 (if (fboundp 'menu-bar-mode) (menu-bar-mode -1))
-(nyan-mode t)
+;; (nyan-mode t)
+(add-hook 'prog-mode-hook 'highlight-numbers-mode)
 (setq blink-cursor-blinks 0)
 
 (setq visible-bell nil)
@@ -69,7 +72,8 @@
 (setq show-paren-delay 0)
 (put 'scroll-left 'disabled nil)
 ;;(global-linum-mode t) ;; enable line numbers globally
-
+(if (eq system-type 'gnu/linux)
+    (set-default-font "Inconsolata 13"))
 
 
 
