@@ -49,9 +49,14 @@
 
 ;; appearance
 (add-to-list 'custom-theme-load-path "~/.emacs.d/themes/")
+
 (if (display-graphic-p)
     (load-theme 'zenburn t)
   (load-theme 'zenburn-tty t))
+
+(custom-theme-set-faces
+ 'zenburn
+ '(highlight-numbers-number ((t (:foreground "#DC8CC3")))))
 
 (global-hl-line-mode 1)
 (setq inhibit-startup-message t)
@@ -401,7 +406,7 @@ actually became a place between strings instead"
  '(indent-tabs-mode nil)
  '(package-selected-packages
    (quote
-    (tao-theme cmake-mode pymacs projectile nyan-mode idle-highlight-mode helm ggtags flycheck exec-path-from-shell elpy better-defaults)))
+    (highlight-numbers tao-theme cmake-mode pymacs projectile nyan-mode idle-highlight-mode helm ggtags flycheck exec-path-from-shell elpy better-defaults)))
  '(safe-local-variable-values
    (quote
     ((whitespace-newline . t)
