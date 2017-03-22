@@ -61,7 +61,7 @@
  '(font-lock-warning-face ((t (:bold t :foreground "yellow"))))
 
 ;;;;; linum-mode
- '(linum ((t (:foreground "green" :background "black")))))
+ '(linum ((t (:foreground "magenta" :background "black")))))
 
 ;;;###autoload
 (when load-file-name

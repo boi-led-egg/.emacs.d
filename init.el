@@ -65,12 +65,16 @@
 (add-to-list 'custom-theme-load-path "~/.emacs.d/themes/")
 
 (if (display-graphic-p)
-    (load-theme 'zenburn t)
-  (load-theme 'zenburn-tty t))
-
-(custom-theme-set-faces
- 'zenburn
- '(highlight-numbers-number ((t (:foreground "#DC8CC3")))))
+    (progn
+      (load-theme 'zenburn t)
+      (custom-theme-set-faces
+       'zenburn
+       '(highlight-numbers-number ((t (:foreground "#DC8CC3")))))
+      (if (eq system-type 'gnu/linux)
+          (set-default-font "Inconsolata 13")))
+  (progn
+    (load-theme 'zenburn-tty t)
+    (setq linum-format "%4d \u2502")))
 
 (global-hl-line-mode 1)
 (setq inhibit-startup-message t)
@@ -91,10 +95,6 @@
 (setq show-paren-delay 0)
 (put 'scroll-left 'disabled nil)
 ;;(global-linum-mode t) ;; enable line numbers globally
-(if (eq system-type 'gnu/linux)
-    (set-default-font "Inconsolata 13"))
-
-
 
 
 ;; custom functions
