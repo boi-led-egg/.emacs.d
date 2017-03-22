@@ -3,9 +3,24 @@
 ;; install system packages from here: https://realpython.com/blog/python/emacs-the-best-python-editor/
 (require 'package)
 (setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
-                         ("marmalade" . "https://marmalade-repo.org/packages/")
+                         ;; ("marmalade" . "https://marmalade-repo.org/packages/")
                          ("melpa" . "http://melpa.org/packages/")
-                         ("user42" . "http://download.tuxfamily.org/user42/elpa/packages/")))
+                         ("user42" . "http://download.tuxfamily.org/user42/elpa/packages/")
+                         ("elpy" . "https://jorgenschaefer.github.io/packages/")))
+;;# Either of these
+;; pip install rope
+;; pip install jedi
+;; # flake8 for code checks
+;; pip install flake8
+;; # importmagic for automatic imports
+;; pip install importmagic
+;; # and autopep8 for automatic PEP8 formatting
+;; pip install autopep8
+;; # and yapf for code formatting
+;; pip install yapf
+
+;; pip install jedi flake8 importmagic autopep8
+
 (package-initialize)
 
 (setq do-init-updates nil)
@@ -34,9 +49,8 @@
       ;;         cmake-mode
       ;;         company
       ;;         zenburn-theme
-;; highlight-numbers
-      ;;         ;; flycheck-haskell
-      ;;         ;; haskell-mode
+      ;;         highlight-numbers
+      ;;         elpy
       ;;         ))
       ;; (dolist (pkg auto-install-packages)
       ;;   (unless (package-installed-p pkg)
