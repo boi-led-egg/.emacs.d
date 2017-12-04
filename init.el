@@ -23,40 +23,90 @@
 
 (package-initialize)
 
-(setq do-init-updates nil)
-(with-temp-buffer
-  (insert-file-contents (concat user-emacs-directory "init.el"))
-  (setq current-initel-md5 (secure-hash 'md5 (buffer-string))))
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(column-number-mode t)
+ '(elpy-modules
+   (quote
+    (elpy-module-company elpy-module-eldoc elpy-module-flymake elpy-module-pyvenv)))
+ '(flymake-start-syntax-check-on-newline t)
+ '(indent-tabs-mode nil)
+ '(package-selected-packages
+   (quote
+    (elpy highlight-numbers tao-theme cmake-mode projectile flycheck elpy zenburn-theme company)))
+ '(safe-local-variable-values
+   (quote
+    ((whitespace-newline . t)
+     (whitespace-style face trailing lines-tail space-before-tab indentation empty))))
+ '(tool-bar-mode nil))
 
-(if (file-exists-p (concat user-emacs-directory "init.el.hash"))
-    (progn
-      (with-temp-buffer
-        (insert-file-contents (concat user-emacs-directory "init.el.hash"))
-        (setq old-initel-md5 (buffer-string)))
-      (if (not (string-equal old-initel-md5 current-initel-md5))
-          (setq do-init-updates t))
-  (progn
-    (setq do-init-updates t))))
+(unless package-archive-contents
+  (package-refresh-contents))
+(package-install-selected-packages)
 
-(if (eq do-init-updates t)
-    (progn
-      (print "needs updates")
-      (with-temp-file (concat user-emacs-directory "init.el.hash")
-        (insert current-initel-md5))))
-      ;; (package-refresh-contents)
-      ;; (setq auto-install-packages
-      ;;       '(flycheck
-      ;;         cmake-mode
-      ;;         company
-      ;;         zenburn-theme
-      ;;         highlight-numbers
-      ;;         elpy
-      ;;         ))
-      ;; (dolist (pkg auto-install-packages)
-      ;;   (unless (package-installed-p pkg)
-      ;;     (package-install pkg)))))
+;; (defun ensure-package-installed (&rest packages)
+;;   "Assure every package is installed, ask for installation if it’s not.
 
-  ;; 4) search for cmake file
+;; Return a list of installed packages or nil for every skipped package."
+;;   (mapcar
+;;    (lambda (package)
+;;      ;; (package-installed-p 'evil)
+;;      (if (package-installed-p package)
+;;          nil
+;;        (if (y-or-n-p (format "Package %s is missing. Install it? " package))
+;;            (package-install package)
+;;          package)))
+;;    packages))
+
+
+
+;; make sure to have downloaded archive description.
+;; Or use package-archive-contents as suggested by Nicolas Dudebout
+;; (or (file-exists-p package-user-dir)
+;;     (package-refresh-contents))
+;; (package-refresh-contents)
+;; (ensure-package-installed 'zenburn-theme 'flycheck 'cmake-mode 'company 'highlight-numbers 'elpy)
+
+
+
+
+;; (setq do-init-updates nil)
+;; (with-temp-buffer
+;;   (insert-file-contents (concat user-emacs-directory "init.el"))
+;;   (setq current-initel-md5 (secure-hash 'md5 (buffer-string))))
+
+;; (if (file-exists-p (concat user-emacs-directory "init.el.hash"))
+;;     (progn
+;;       (with-temp-buffer
+;;         (insert-file-contents (concat user-emacs-directory "init.el.hash"))
+;;         (setq old-initel-md5 (buffer-string)))
+;;       (if (not (string-equal old-initel-md5 current-initel-md5))
+;;           (setq do-init-updates t))
+;;   (progn
+;;     (setq do-init-updates t))))
+
+;; (if (eq do-init-updates t)
+;;     (progn
+;;       (print "needs updates")
+;;       (with-temp-file (concat user-emacs-directory "init.el.hash")
+;;         (insert current-initel-md5))))
+;;       ;; (package-refresh-contents)
+;;       ;; (setq auto-install-packages
+;;       ;;       '(flycheck
+;;       ;;         cmake-mode
+;;       ;;         company
+;;       ;;         zenburn-theme
+;;       ;;         highlight-numbers
+;;       ;;         elpy
+;;       ;;         ))
+;;       ;; (dolist (pkg auto-install-packages)
+;;       ;;   (unless (package-installed-p pkg)
+;;       ;;     (package-install pkg)))))
+
+;;   ;; 4) search for cmake file
 
 
 
@@ -402,30 +452,6 @@ actually became a place between strings instead"
 ;;         ;("\\b[0-9]\\(\\w\\|\\.\\)+?\\b" . font-lock-warning-face)
 ;;     ))
 ;; ))
-
-
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(column-number-mode t)
- '(custom-safe-themes
-   (quote
-    ("b0fc95a71c0d988dbb9a147ae30b11748d87987f8f818fbff84484f6bb7892d7" "23ccf46b0d05ae80ee0661b91a083427a6c61e7a260227d37e36833d862ccffc" "63dd8ce36f352b92dbf4f80e912ac68216c1d7cf6ae98195e287fd7c7f7cb189" default)))
- '(elpy-modules
-   (quote
-    (elpy-module-company elpy-module-eldoc elpy-module-flymake elpy-module-pyvenv)))
- '(flymake-start-syntax-check-on-newline t)
- '(indent-tabs-mode nil)
- '(package-selected-packages
-   (quote
-    (highlight-numbers tao-theme cmake-mode pymacs projectile nyan-mode idle-highlight-mode helm ggtags flycheck exec-path-from-shell elpy better-defaults)))
- '(safe-local-variable-values
-   (quote
-    ((whitespace-newline . t)
-     (whitespace-style face trailing lines-tail space-before-tab indentation empty))))
- '(tool-bar-mode nil))
 
 ;;(when (require 'flycheck nil t)
 ;;  (setq elpy-modules (delq 'elpy-module-flymake elpy-modules))
