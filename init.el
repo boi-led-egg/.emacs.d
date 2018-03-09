@@ -40,12 +40,13 @@
  '(safe-local-variable-values
    (quote
     ((whitespace-newline . t)
-     (whitespace-style face trailing lines-tail space-before-tab indentation empty))))
- '(tool-bar-mode nil))
+     (whitespace-style face trailing lines-tail space-before-tab indentation empty)))))
 
 (unless package-archive-contents
   (package-refresh-contents))
-(package-install-selected-packages)
+(if (version< emacs-version "25")
+    (message "Too old version to automatically install packages")
+  (package-install-selected-packages))
 
 ;; (defun ensure-package-installed (&rest packages)
 ;;   "Assure every package is installed, ask for installation if it’s not.
@@ -346,7 +347,8 @@ actually became a place between strings instead"
 
 
 ;; modes and hooks
-(elpy-enable)
+(when (require 'elpy nil 'noerror)
+  (elpy-enable))
 (autoload 'ibuffer "ibuffer" "List buffers." t)
 
 ; Always use one buffer in dired mode
