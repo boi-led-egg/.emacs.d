@@ -44,6 +44,7 @@
 
 (unless package-archive-contents
   (package-refresh-contents))
+
 (if (version< emacs-version "25")
     (message "Too old version to automatically install packages")
   (package-install-selected-packages))
@@ -115,14 +116,18 @@
 ;; appearance
 (add-to-list 'custom-theme-load-path "~/.emacs.d/themes/")
 
-(if (display-graphic-p)
+(if (require 'zenburn-theme nil 'noerror)
+  (if (display-graphic-p)
+      (progn
+        (load-theme 'zenburn t)
+        (custom-theme-set-faces
+         'zenburn
+         '(highlight-numbers-number ((t (:foreground "#DC8CC3")))))
+        (if (eq system-type 'gnu/linux)
+            (set-default-font "Inconsolata 13")))
     (progn
-      (load-theme 'zenburn t)
-      (custom-theme-set-faces
-       'zenburn
-       '(highlight-numbers-number ((t (:foreground "#DC8CC3")))))
-      (if (eq system-type 'gnu/linux)
-          (set-default-font "Inconsolata 13")))
+      (load-theme 'zenburn-tty t)
+      (setq linum-format "%4d \u2502")))
   (progn
     (load-theme 'zenburn-tty t)
     (setq linum-format "%4d \u2502")))
@@ -133,7 +138,8 @@
 (if (fboundp 'tool-bar-mode) (tool-bar-mode -1))
 (if (fboundp 'menu-bar-mode) (menu-bar-mode -1))
 ;; (nyan-mode t)
-(add-hook 'prog-mode-hook 'highlight-numbers-mode)
+(when (require 'highlight-numbers nil 'noerror)
+  (add-hook 'prog-mode-hook 'highlight-numbers-mode))
 (setq blink-cursor-blinks 0)
 
 (setq visible-bell nil)
