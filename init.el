@@ -1,5 +1,4 @@
-
-;; packages
+;; --- packages ---
 ;; install system packages from here: https://realpython.com/blog/python/emacs-the-best-python-editor/
 (require 'package)
 (setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
@@ -7,7 +6,7 @@
                          ("melpa" . "http://melpa.org/packages/")
                          ("user42" . "http://download.tuxfamily.org/user42/elpa/packages/")
                          ("elpy" . "https://jorgenschaefer.github.io/packages/")))
-;;# Either of these
+;; # Either of these
 ;; pip install rope
 ;; pip install jedi
 ;; # flake8 for code checks
@@ -45,15 +44,12 @@
 ;;    packages))
 
 
-
 ;; make sure to have downloaded archive description.
 ;; Or use package-archive-contents as suggested by Nicolas Dudebout
 ;; (or (file-exists-p package-user-dir)
 ;;     (package-refresh-contents))
 ;; (package-refresh-contents)
 ;; (ensure-package-installed 'zenburn-theme 'flycheck 'cmake-mode 'company 'highlight-numbers 'elpy)
-
-
 
 
 ;; (setq do-init-updates nil)
@@ -92,9 +88,7 @@
 ;;   ;; 4) search for cmake file
 
 
-
-
-;; appearance
+;; --- appearance ---
 (add-to-list 'custom-theme-load-path "~/.emacs.d/themes/")
 
 (if (require 'zenburn-theme nil 'noerror)
@@ -253,10 +247,7 @@ actually became a place between strings instead"
   (other-window -1))
 
 
-
-
-
-;; keybindings and mouse
+;; --- keybindings and mouse ---
 ;; space cadet mode
 (define-key key-translation-map (kbd "<f13> p") (kbd "δ"))
 (define-key key-translation-map (kbd "<f13> t") (kbd "⊂"))
@@ -302,18 +293,18 @@ actually became a place between strings instead"
 (global-set-key [(super f8)]         (lambda ()(interactive) (point-to-register 4)))
 (global-set-key [f8] (lambda ()(interactive) (jump-to-register 4)))
 
-(global-set-key [M-up] (lambda () (interactive) (scroll-down 4)))
+(global-set-key [M-up]   (lambda () (interactive) (scroll-down 4)))
 (global-set-key [M-down] (lambda () (interactive) (scroll-up 4)))
-(global-set-key [?\s-/] 'comment-or-uncomment-region-or-line)
+(global-set-key [?\s-/]       'comment-or-uncomment-region-or-line)
 (global-set-key (kbd "C-c /") 'comment-or-uncomment-region-or-line)
 (global-set-key (kbd "C-a") 'smart-beginning-of-line)
 (global-set-key (kbd "s-d") 'select-string-or-search-forward)
 (global-set-key (kbd "s-D") 'select-string-or-search-backward)
 (global-set-key (kbd "s-w") 'copy-word)
-(global-set-key (kbd "s-<left>") 'windmove-left)          ; move to left window
+(global-set-key (kbd "s-<left>")  'windmove-left)          ; move to left window
 (global-set-key (kbd "s-<right>") 'windmove-right)        ; move to right window
-(global-set-key (kbd "s-<up>") 'windmove-up)              ; move to upper window
-(global-set-key (kbd "s-<down>") 'windmove-down)          ; move to lower window
+(global-set-key (kbd "s-<up>")    'windmove-up)              ; move to upper window
+(global-set-key (kbd "s-<down>")  'windmove-down)          ; move to lower window
 ; Macroses
 ;(global-set-key (kbd "s-9") 'kmacro-start-macro-or-insert-counter)
 ;(global-set-key (kbd "s-0") 'kmacro-end-or-call-macro)
@@ -330,11 +321,7 @@ actually became a place between strings instead"
 ;(setq mouse-wheel-progressive-speed nil) ;; don't accelerate scrolling
 
 
-
-
-
-
-;; modes and hooks
+;; --- modes and hooks ---
 (when (require 'elpy nil 'noerror)
   (elpy-enable))
 (autoload 'ibuffer "ibuffer" "List buffers." t)
@@ -410,40 +397,8 @@ actually became a place between strings instead"
 (add-hook 'c-mode-hook  (lambda () (modify-syntax-entry ?_ "w")))
 (add-hook 'c++-mode-hook  (lambda () (modify-syntax-entry ?_ "w")))
 (add-hook 'c++-mode-hook (lambda () (setq flycheck-gcc-language-standard "c++11")))
-;; (add-hook 'c-mode-common-hook (lambda ()
-;;     (font-lock-add-keywords nil '(
 
-;;         ; Valid hex number (will highlight invalid suffix though)
-;;         ;("\\b0x[[:xdigit:]]+[uUlL]*\\b" . font-lock-string-face)
-
-;;         ; Invalid hex number
-;;         ;("\\b0x\\(\\w\\|\\.\\)+\\b" . font-lock-warning-face)
-
-;;         ; Valid floating point number.
-;;         ("\\(\\b[0-9]+\\|\\)\\(\\.\\)\\([0-9]+\\(e[-]?[0-9]+\\)?\\([lL]?\\|[dD]?[fF]?\\)\\)\\b" (1 font-lock-type-face) (3 font-lock-type-face))
-
-;;         ; Invalid floating point number.  Must be before valid decimal.
-;;         ;("\\b[0-9].*?\\..+?\\b" . font-lock-warning-face)
-
-;;         ; Valid decimal number.  Must be before octal regexes otherwise 0 and 0l
-;;         ; will be highlighted as errors.  Will highlight invalid suffix though.
-;;         ("\\b\\(\\(0\\|[1-9][0-9]*\\)[uUlL]*\\)\\b" 1 font-lock-type-face)
-
-;;         ; Valid octal number
-;;         ;("\\b0[0-7]+[uUlL]*\\b" . font-lock-type-face)
-
-;;         ; Floating point number with no digits after the period.  This must be
-;;         ; after the invalid numbers, otherwise it will "steal" some invalid
-;;         ; numbers and highlight them as valid.
-;;         ;("\\b\\([0-9]+\\)\\." (1 font-lock-type-face))
-
-;;         ; Invalid number.  Must be last so it only highlights anything not
-;;         ; matched above.
-;;         ;("\\b[0-9]\\(\\w\\|\\.\\)+?\\b" . font-lock-warning-face)
-;;     ))
-;; ))
-
-
+;; --- packages ---
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
