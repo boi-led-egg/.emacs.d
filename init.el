@@ -23,25 +23,6 @@
 
 (package-initialize)
 
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(column-number-mode t)
- '(elpy-modules
-   (quote
-    (elpy-module-company elpy-module-eldoc elpy-module-flymake elpy-module-pyvenv)))
- '(flymake-start-syntax-check-on-newline t)
- '(indent-tabs-mode nil)
- '(package-selected-packages
-   (quote
-    (elpy highlight-numbers tao-theme cmake-mode projectile flycheck elpy zenburn-theme company)))
- '(safe-local-variable-values
-   (quote
-    ((whitespace-newline . t)
-     (whitespace-style face trailing lines-tail space-before-tab indentation empty)))))
-
 (unless package-archive-contents
   (package-refresh-contents))
 
@@ -324,6 +305,7 @@ actually became a place between strings instead"
 (global-set-key [M-up] (lambda () (interactive) (scroll-down 4)))
 (global-set-key [M-down] (lambda () (interactive) (scroll-up 4)))
 (global-set-key [?\s-/] 'comment-or-uncomment-region-or-line)
+(global-set-key (kbd "C-c /") 'comment-or-uncomment-region-or-line)
 (global-set-key (kbd "C-a") 'smart-beginning-of-line)
 (global-set-key (kbd "s-d") 'select-string-or-search-forward)
 (global-set-key (kbd "s-D") 'select-string-or-search-backward)
@@ -460,6 +442,30 @@ actually became a place between strings instead"
 ;;         ;("\\b[0-9]\\(\\w\\|\\.\\)+?\\b" . font-lock-warning-face)
 ;;     ))
 ;; ))
+
+
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(column-number-mode t)
+ '(custom-safe-themes
+   (quote
+    ("b0fc95a71c0d988dbb9a147ae30b11748d87987f8f818fbff84484f6bb7892d7" "23ccf46b0d05ae80ee0661b91a083427a6c61e7a260227d37e36833d862ccffc" "63dd8ce36f352b92dbf4f80e912ac68216c1d7cf6ae98195e287fd7c7f7cb189" default)))
+ '(elpy-modules
+   (quote
+    (elpy-module-company elpy-module-eldoc elpy-module-flymake elpy-module-pyvenv)))
+ '(flymake-start-syntax-check-on-newline t)
+ '(indent-tabs-mode nil)
+ '(package-selected-packages
+   (quote
+    (json-mode highlight-numbers tao-theme cmake-mode pymacs projectile nyan-mode idle-highlight-mode helm ggtags flycheck exec-path-from-shell elpy better-defaults)))
+ '(safe-local-variable-values
+   (quote
+    ((whitespace-newline . t)
+     (whitespace-style face trailing lines-tail space-before-tab indentation empty))))
+ '(tool-bar-mode nil))
 
 ;;(when (require 'flycheck nil t)
 ;;  (setq elpy-modules (delq 'elpy-module-flymake elpy-modules))
