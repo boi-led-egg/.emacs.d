@@ -99,7 +99,7 @@
          'zenburn
          '(highlight-numbers-number ((t (:foreground "#DC8CC3")))))
         (if (eq system-type 'gnu/linux)
-            (set-default-font "Inconsolata 13")))
+            (set-default-font "Inconsolata 14")))
     (progn
       (load-theme 'zenburn-tty t)
       (setq linum-format "%4d \u2502")))
@@ -415,7 +415,7 @@ actually became a place between strings instead"
  '(indent-tabs-mode nil)
  '(package-selected-packages
    (quote
-    (json-mode highlight-numbers tao-theme cmake-mode pymacs projectile nyan-mode idle-highlight-mode helm ggtags flycheck exec-path-from-shell elpy better-defaults)))
+    (racer flycheck-rust rust-mode json-mode highlight-numbers tao-theme cmake-mode pymacs projectile nyan-mode idle-highlight-mode helm ggtags flycheck exec-path-from-shell elpy)))
  '(safe-local-variable-values
    (quote
     ((whitespace-newline . t)
