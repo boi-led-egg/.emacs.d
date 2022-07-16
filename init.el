@@ -91,15 +91,32 @@
 ;; --- appearance ---
 (add-to-list 'custom-theme-load-path "~/.emacs.d/themes/")
 
+(setq zenburn-override-colors-alist
+      '(("zenburn-bg-2"  . "#000000")
+        ("zenburn-bg-1"  . "#101010")
+        ("zenburn-bg-08" . "#151515")
+        ("zenburn-bg-05" . "#1A1A1A")
+        ("zenburn-bg"    . "#282828")
+        ("zenburn-bg+05" . "#2A2A2A")
+        ("zenburn-bg+1"  . "#2F2F2F")
+        ("zenburn-bg+2"  . "#3F3F3F")
+        ("zenburn-bg+3"  . "#4F4F4F")))
+
+
 (if (require 'zenburn-theme nil 'noerror)
   (if (display-graphic-p)
       (progn
         (load-theme 'zenburn t)
         (custom-theme-set-faces
          'zenburn
-         '(highlight-numbers-number ((t (:foreground "#DC8CC3")))))
+         ;; '(highlight-numbers-number ((t (:foreground "#DC8CC3"))))
+         '(region ((t (:background "#600060" :extend t))
+                   (t :inverse-video t)))
+         '(cursor ((t (:foreground "#000000" :background "#FFAA00"))))
+         '(font-lock-comment-face ((t (:foreground "#666666"))))
+         '(font-lock-comment-delimiter-face ((t (:foreground "#606060")))))
         (if (eq system-type 'gnu/linux)
-            (set-default-font "Inconsolata 14")))
+            (set-default-font "Terminus (TTF) 15")))
     (progn
       (load-theme 'zenburn-tty t)
       (setq linum-format "%4d \u2502")))

@@ -49,7 +49,7 @@
  '(lazy-highlight ((t (:foreground "black" :weight bold :background "yellow"))))
 ;; font lock
  '(font-lock-builtin-face ((t (:foreground "blue" :bold t))))
- '(font-lock-comment-face ((t (:foreground "green"))))
+ '(font-lock-comment-face ((t (:foreground "grey"))))
  '(font-lock-constant-face ((t (:foreground "magenta"))))
  '(font-lock-doc-face ((t (:foreground "green"))))
  '(font-lock-function-name-face ((t (:foreground "cyan"))))
