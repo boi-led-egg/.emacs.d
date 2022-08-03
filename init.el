@@ -2,9 +2,9 @@
 ;; install system packages from here: https://realpython.com/blog/python/emacs-the-best-python-editor/
 (require 'package)
 (setq package-archives '(("gnu" . "http://elpa.gnu.org/packages/")
-                         ;; ("marmalade" . "https://marmalade-repo.org/packages/")
+                         ;; ("Marmalade" . "https://marmalade-repo.org/packages/")
                          ("melpa" . "http://melpa.org/packages/")
-                         ("user42" . "http://download.tuxfamily.org/user42/elpa/packages/")
+                         ;; ("user42" . "http://download.tuxfamily.org/user42/elpa/packages/")
                          ("elpy" . "https://jorgenschaefer.github.io/packages/")))
 ;; # Either of these
 ;; pip install rope
@@ -123,6 +123,11 @@
   (progn
     (load-theme 'zenburn-tty t)
     (setq linum-format "%4d \u2502")))
+
+(setq highlight-indent-guides-auto-odd-face-perc 1)
+(setq highlight-indent-guides-auto-even-face-perc 2)
+(setq highlight-indent-guides-method 'column)
+(add-hook 'prog-mode-hook 'highlight-indent-guides-mode)
 
 (global-hl-line-mode 1)
 (setq inhibit-startup-message t)
@@ -323,8 +328,8 @@ actually became a place between strings instead"
 (global-set-key (kbd "s-<up>")    'windmove-up)              ; move to upper window
 (global-set-key (kbd "s-<down>")  'windmove-down)          ; move to lower window
 ; Macroses
-;(global-set-key (kbd "s-9") 'kmacro-start-macro-or-insert-counter)
-;(global-set-key (kbd "s-0") 'kmacro-end-or-call-macro)
+(global-set-key [f3] 'kmacro-start-macro-or-insert-counter)
+(global-set-key [f4] 'kmacro-end-or-call-macro)
 ; Buffers manipulation
 (global-set-key (kbd "<C-tab>") 'next-buffer)
 (global-set-key (kbd "<C-S-iso-lefttab>") 'previous-buffer)
@@ -365,7 +370,7 @@ actually became a place between strings instead"
 ;	   auto-mode-alist))
 
 ;; TODO read file location from save file
-(autoload 'cmake-mode "/opt/local/share/cmake-3.7/editors/emacs/cmake-mode.el" t)
+;; (autoload 'cmake-mode "/opt/local/share/cmake-3.7/editors/emacs/cmake-mode.el" t)
 (setq save-interprogram-paste-before-kill t)
 (global-auto-revert-mode 1)
 (put 'dired-find-alternate-file 'disabled nil)
@@ -415,6 +420,8 @@ actually became a place between strings instead"
 (add-hook 'c++-mode-hook  (lambda () (modify-syntax-entry ?_ "w")))
 (add-hook 'c++-mode-hook (lambda () (setq flycheck-gcc-language-standard "c++11")))
 
+(setq cmake-tab-width 4)
+(autoload 'cmake-mode "cmake-mode" "Major mode for editing CMake listfiles." t)
 ;; --- packages ---
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -432,7 +439,7 @@ actually became a place between strings instead"
  '(indent-tabs-mode nil)
  '(package-selected-packages
    (quote
-    (racer flycheck-rust rust-mode json-mode highlight-numbers tao-theme cmake-mode pymacs projectile nyan-mode idle-highlight-mode helm ggtags flycheck exec-path-from-shell elpy zenburn-theme)))
+    (highlight-indent-guides highlight-indentation cmake-mode php-mode racer flycheck-rust rust-mode json-mode highlight-numbers tao-theme pymacs projectile nyan-mode idle-highlight-mode helm ggtags flycheck exec-path-from-shell elpy zenburn-theme)))
  '(safe-local-variable-values
    (quote
     ((whitespace-newline . t)
