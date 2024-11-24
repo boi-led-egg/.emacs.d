@@ -101,31 +101,23 @@
         ("zenburn-bg+1"  . "#2F2F2F")
         ("zenburn-bg+2"  . "#3F3F3F")
         ("zenburn-bg+3"  . "#4F4F4F")))
+(load-theme 'zenburn t)
 
+(custom-theme-set-faces
+ 'zenburn
+ ;; '(highlight-numbers-number ((t (:foreground "#DC8CC3"))))
+ '(region ((t (:background "#600060" :extend t))
+           (t :inverse-video t)))
+ '(cursor ((t (:foreground "#000000" :background "#FFAA00"))))
+ '(font-lock-comment-face ((t (:foreground "#666666"))))
+ '(font-lock-comment-delimiter-face ((t (:foreground "#606060"))))
+ '(linum ((t (:foreground "#666666" :background "#282828"))))
+)
 
-(if (require 'zenburn-theme nil 'noerror)
-  (if (display-graphic-p)
-      (progn
-        (load-theme 'zenburn t)
-        (custom-theme-set-faces
-         'zenburn
-         ;; '(highlight-numbers-number ((t (:foreground "#DC8CC3"))))
-         '(region ((t (:background "#600060" :extend t))
-                   (t :inverse-video t)))
-         '(cursor ((t (:foreground "#000000" :background "#FFAA00"))))
-         '(font-lock-comment-face ((t (:foreground "#666666"))))
-         '(font-lock-comment-delimiter-face ((t (:foreground "#606060")))))
-        (if (eq system-type 'gnu/linux)
-            (set-default-font "Terminus (TTF) 15")))
-    (progn
-      (load-theme 'zenburn-tty t)
-      (setq linum-format "%4d \u2502")))
-  (progn
-    (load-theme 'zenburn-tty t)
-    (setq linum-format "%4d \u2502")))
+(setq linum-format "%4d \u2502")
 
-(setq highlight-indent-guides-auto-odd-face-perc 1)
-(setq highlight-indent-guides-auto-even-face-perc 2)
+(setq highlight-indent-guides-auto-odd-face-perc 3)
+(setq highlight-indent-guides-auto-even-face-perc 4)
 (setq highlight-indent-guides-method 'column)
 (add-hook 'prog-mode-hook 'highlight-indent-guides-mode)
 
@@ -268,28 +260,20 @@ actually became a place between strings instead"
   (interactive)
   (other-window -1))
 
-
 ;; --- keybindings and mouse ---
-;; space cadet mode
-(define-key key-translation-map (kbd "<f13> p") (kbd "δ"))
-(define-key key-translation-map (kbd "<f13> t") (kbd "⊂"))
-(define-key key-translation-map (kbd "<f13> y") (kbd "⊃"))
-(define-key key-translation-map (kbd "<f13> j") (kbd "←"))
-(define-key key-translation-map (kbd "<f13> k") (kbd "→"))
-(define-key key-translation-map (kbd "<f13> l") (kbd "↔"))
-(define-key key-translation-map (kbd "<f13> i") (kbd "∞"))
-(define-key key-translation-map (kbd "<f13> e") (kbd "∩"))
-(define-key key-translation-map (kbd "<f13> w") (kbd "∨"))
-(define-key key-translation-map (kbd "<f13> c") (kbd "≠"))
-(define-key key-translation-map (kbd "<f13> n") (kbd "≤"))
-(define-key key-translation-map (kbd "<f13> m") (kbd "≥"))
-(define-key key-translation-map (kbd "<f13> a") (kbd "∧"))
-(define-key key-translation-map (kbd "<f13> r") (kbd "∪"))
 
-;; (global-set-key (kbd "<f2>") 'dired)
+
 (global-set-key (kbd "<f1>") 'ibuffer)
-(global-set-key (kbd "<f12>") 'flycheck-mode)
+(global-set-key [f5] 'highlight-symbol-at-point)
+(global-set-key (kbd "<S-f5>") (lambda() (interactive) (unhighlight-regexp t)))
+(global-set-key (kbd "<f6>") 'select-string-or-search-forward)
+(global-set-key (kbd "<S-f6>") 'select-string-or-search-backward)
+(global-set-key (kbd "<f7>") 'lsp-ui-doc-show)
+(global-set-key (kbd "<S-f7>") 'lsp-ui-doc-hide)
+(global-set-key (kbd "<f8>") 'lsp-ui-imenu)
 (global-set-key (kbd "<f9>") 'global-linum-mode)
+(global-set-key (kbd "<f12>") 'flycheck-mode)
+
 ;; (global-set-key "\C-x\C-m" 'execute-extended-command)
 ;; (global-set-key "\C-c\C-m" 'execute-extended-command)
 (global-set-key "\C-w" 'backward-kill-word)
@@ -306,22 +290,21 @@ actually became a place between strings instead"
 (global-set-key [(super p)] 'prev-window)
 
 ;; Navigation, press [s-f<n>] to mark a point, and then f<n> to jump back to it
-(global-set-key [(super f5)]         (lambda ()(interactive) (point-to-register 1)))
-(global-set-key [f5] (lambda ()(interactive) (jump-to-register 1)))
-(global-set-key [(super f6)]         (lambda ()(interactive) (point-to-register 2)))
-(global-set-key [f6] (lambda ()(interactive) (jump-to-register 2)))
-(global-set-key [(super f7)]         (lambda ()(interactive) (point-to-register 3)))
-(global-set-key [f7] (lambda ()(interactive) (jump-to-register 3)))
-(global-set-key [(super f8)]         (lambda ()(interactive) (point-to-register 4)))
-(global-set-key [f8] (lambda ()(interactive) (jump-to-register 4)))
+;; (global-set-key [(super f5)]         (lambda ()(interactive) (point-to-register 1)))
+;; (global-set-key [f5] (lambda ()(interactive) (jump-to-register 1)))
+;; (global-set-key [(super f6)]         (lambda ()(interactive) (point-to-register 2)))
+;; (global-set-key [f6] (lambda ()(interactive) (jump-to-register 2)))
+;; (global-set-key [(super f7)]         (lambda ()(interactive) (point-to-register 3)))
+;; (global-set-key [f7] (lambda ()(interactive) (jump-to-register 3)))
+;; (global-set-key [(super f8)]         (lambda ()(interactive) (point-to-register 4)))
+;; (global-set-key [f8] (lambda ()(interactive) (jump-to-register 4)))
 
 (global-set-key [M-up]   (lambda () (interactive) (scroll-down 4)))
 (global-set-key [M-down] (lambda () (interactive) (scroll-up 4)))
 (global-set-key [?\s-/]       'comment-or-uncomment-region-or-line)
 (global-set-key (kbd "C-c /") 'comment-or-uncomment-region-or-line)
 (global-set-key (kbd "C-a") 'smart-beginning-of-line)
-(global-set-key (kbd "s-d") 'select-string-or-search-forward)
-(global-set-key (kbd "s-D") 'select-string-or-search-backward)
+
 (global-set-key (kbd "s-w") 'copy-word)
 (global-set-key (kbd "s-<left>")  'windmove-left)          ; move to left window
 (global-set-key (kbd "s-<right>") 'windmove-right)        ; move to right window
@@ -344,8 +327,9 @@ actually became a place between strings instead"
 
 
 ;; --- modes and hooks ---
-(when (require 'elpy nil 'noerror)
-  (elpy-enable))
+;; (when (require 'elpy nil 'noerror)
+;;   (elpy-enable))
+
 (autoload 'ibuffer "ibuffer" "List buffers." t)
 
 ; Always use one buffer in dired mode
@@ -390,6 +374,10 @@ actually became a place between strings instead"
 ;; (autoload 'pylint "python-pylint")
 
 ;(toggle-diredp-find-file-reuse-dir 1)
+(when (load "flycheck" t t)
+  ;; (setq elpy-modules (delq 'elpy-module-flymake elpy-modules))
+  ;; (add-hook 'elpy-mode-hook 'flycheck-mode)
+  (setq flycheck-check-syntax-automatically '(save mode-enabled)))
 
 (add-hook 'python-mode-hook
       (lambda ()
@@ -397,31 +385,85 @@ actually became a place between strings instead"
         (setq tab-width 4)
         (setq python-indent 4)))
 
-;; c style settings
-(setq c-default-style "linux"
-          c-basic-offset 4
-          tab-width 4
-          indent-tabs-mode nil)
+(require 'lsp-pyls)
+(setq lsp-pylsp-plugins-flake8-enabled t)
+(setq lsp-pylsp-plugins-mccabe-enabled nil)
+(setq lsp-pylsp-plugins-mypy-enabled t)
+(setq lsp-pylsp-plugins-mypy-live-mode nil)
+;; (setq lsp-enable-symbol-highlighting nil)
 
+;; (setq lsp-pylsp-plugins-mypy-strict t)
+(setq lsp-pylsp-plugins-pycodestyle-enabled nil)
+(setq lsp-pylsp-plugins-pylint-enabled t)
+(setq lsp-completion-provider :none)
+(with-eval-after-load 'lsp-mode
+  (lsp-register-custom-settings '(("pyls.plugins.jedi.extra_paths" ["/home/ikhivrenko/redfish"]))))
+
+(add-hook 'python-mode-hook 'lsp)
+;; c style settings
 (defun linux-c-mode ()
   (interactive)
   (c-mode)
-  (setq c-indent-level 4)
+  (setq c-indent-level 8)
   (setq c-brace-imaginary-offset 0)
-  (setq c-brace-offset -4)
-  (setq c-argdecl-indent 4)
-  (setq c-label-offset -4)
-  (setq c-continued-statement-offset 4)
+  (setq c-brace-offset -8)
+  (setq c-argdecl-indent 8)
+  (setq c-label-offset -8)
+  (setq c-continued-statement-offset 8)
+  (setq c-set-offset 'substatement-open 0)
   (setq indent-tabs-mode nil)
-  (setq tab-width 4))
+  (setq tab-width 8))
+
+(setq c-default-style "linux"
+      c-basic-offset 8
+      tab-width 8
+      indent-tabs-mode nil
+      )
 
 ; Modify C/C++ syntax tables to thread underscore sign '_' as a part of word
+;; (add-hook 'c-mode-common-hook 'linux-c-mode)
 (add-hook 'c-mode-hook  (lambda () (modify-syntax-entry ?_ "w")))
 (add-hook 'c++-mode-hook  (lambda () (modify-syntax-entry ?_ "w")))
-(add-hook 'c++-mode-hook (lambda () (setq flycheck-gcc-language-standard "c++11")))
-
+(add-hook 'c++-mode-hook (lambda () (setq flycheck-gcc-language-standard "c++14")))
+;; (add-hook 'c++-mode-hook (lambda () (setq c-set-offset 'substatement-open 0)))
 (setq cmake-tab-width 4)
 (autoload 'cmake-mode "cmake-mode" "Major mode for editing CMake listfiles." t)
+
+
+;; detect when editing git commit messages
+;; TODO: only set width for this mode, maybe create a specific mode
+
+(global-display-fill-column-indicator-mode 1)
+(setq display-fill-column-indicator-column 120)
+(setq-default fill-column 120)
+(add-to-list 'auto-mode-alist '("\\COMMIT_EDITMSG\\'" . display-fill-column-indicator-mode))
+
+;; (require 'ccls)
+;; (setq ccls-executable "/mnt/pb/artifacts/archive/tools/ccls-current/ccls")
+;; (setq ccls-args '("--log-file=/tmp/ccls.log"))
+;; (setq ccls-initialization-options '(
+;;         ; use this option if you want to keep cache directory outside of the purity tree
+;;         ; (by default it'll be created under <purity>/.ccls-cache)
+;;         :cache (:directory "/home/ikhivrenko/ccls-cache")
+;; 		; these options are useful if you're using text-mode emacs and want to reduce clutter
+;;         :client (:snippetSupport :json-false)
+;;         :completion (:detailedLabel :json-false)
+;;         :index (:comments 0)))
+;; (add-hook 'c++-mode-hook 'lsp)
+;; (defun my-c++-mode-hook ()
+;;   (local-set-key [f6] 'lsp-find-references)
+;;   (local-set-key [f5] 'lsp-find-definition)
+;;   (local-set-key [f7] 'lsp-find-implementation)
+;;   (local-set-key [backtab] 'company-complete))
+;; (add-hook 'c++-mode-hook 'my-c++-mode-hook)
+
+;; (setq lsp-diagnostics-provider :none)
+;; (setq lsp-enable-symbol-highlighting nil)
+;; (setq lsp-modeline-code-actions-enable nil)
+;; (setq lsp-modeline-diagnostics-enable nil)
+;; (setq lsp-signature-auto-activate nil)
+;; (setq lsp-signature-render-documentation nil)
+;; (setq lsp-enable-file-watchers nil)
 ;; --- packages ---
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -430,20 +472,19 @@ actually became a place between strings instead"
  ;; If there is more than one, they won't work right.
  '(column-number-mode t)
  '(custom-safe-themes
-   (quote
-    ("54f2d1fcc9bcadedd50398697618f7c34aceb9966a6cbaa99829eb64c0c1f3ca" "b0fc95a71c0d988dbb9a147ae30b11748d87987f8f818fbff84484f6bb7892d7" "23ccf46b0d05ae80ee0661b91a083427a6c61e7a260227d37e36833d862ccffc" "63dd8ce36f352b92dbf4f80e912ac68216c1d7cf6ae98195e287fd7c7f7cb189" default)))
- '(elpy-modules
-   (quote
-    (elpy-module-company elpy-module-eldoc elpy-module-flymake elpy-module-pyvenv)))
+   '("54f2d1fcc9bcadedd50398697618f7c34aceb9966a6cbaa99829eb64c0c1f3ca" "b0fc95a71c0d988dbb9a147ae30b11748d87987f8f818fbff84484f6bb7892d7" "23ccf46b0d05ae80ee0661b91a083427a6c61e7a260227d37e36833d862ccffc" "63dd8ce36f352b92dbf4f80e912ac68216c1d7cf6ae98195e287fd7c7f7cb189" default))
+ '(elpy-modules '(elpy-module-company elpy-module-eldoc elpy-module-pyvenv))
+ '(flycheck-checker-error-threshold 5000)
+ '(flycheck-indication-mode 'right-margin)
  '(flymake-start-syntax-check-on-newline t)
  '(indent-tabs-mode nil)
+ '(lsp-pyls-plugins-flake8-max-line-length 140)
+ '(lsp-ui-sideline-show-symbol t)
  '(package-selected-packages
-   (quote
-    (highlight-indent-guides highlight-indentation cmake-mode php-mode racer flycheck-rust rust-mode json-mode highlight-numbers tao-theme pymacs projectile nyan-mode idle-highlight-mode helm ggtags flycheck exec-path-from-shell elpy zenburn-theme)))
+   '(lsp-ui vterm company ccls highlight-indent-guides highlight-indentation cmake-mode php-mode racer flycheck-rust rust-mode json-mode highlight-numbers tao-theme pymacs projectile nyan-mode idle-highlight-mode helm ggtags flycheck exec-path-from-shell elpy zenburn-theme))
  '(safe-local-variable-values
-   (quote
-    ((whitespace-newline . t)
-     (whitespace-style face trailing lines-tail space-before-tab indentation empty))))
+   '((whitespace-newline . t)
+     (whitespace-style face trailing lines-tail space-before-tab indentation empty)))
  '(tool-bar-mode nil))
 
 ;;(when (require 'flycheck nil t)
@@ -458,4 +499,9 @@ actually became a place between strings instead"
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- )
+ '(flycheck-delimited-error ((t (:extend t :background "color-233"))))
+ '(flycheck-error-delimiter ((t (:extend t :background "color-233"))))
+ '(flycheck-error-list-line-number ((t (:weight bold))))
+ '(flycheck-warning ((t (:foreground "#F0DFAF" :underline t))))
+ '(lsp-ui-sideline-symbol ((t (:background "black" :foreground "blue" :box (:line-width (1 . -1) :color "grey") :height 0.99)))))
+(put 'upcase-region 'disabled nil)
