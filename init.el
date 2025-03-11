@@ -1,42 +1,44 @@
+;; increase gc pool
 (setq gc-cons-threshold (* 1024 1024 16))
 
-(package-initialize)
+;; add melpa to the list of packages
 (require 'package)
 (add-to-list 'package-archives
     '("melpa" . "http://melpa.org/packages/") t)
-
-(dolist (package '(use-package))
-	(unless (package-installed-p package)
-		(package-install package)))
+(package-initialize)
 
 ;; ---------------------------------- appearance -------------------------------
-;; (set-frame-font "Iosevka 12")
-(if (eq system-type 'darwin)
-	(set-face-attribute 'default nil :font "Iosevka" :height 140 :weight 'medium)
-  (set-face-attribute 'default nil :font "Iosevka" :height 120))
-;; (set-face-attribute 'default nil :font "Iosevka" :height 120 :weight 'medium)
+;; text mode doesn't need to set the font. Also ignore if not found
+(when (and (display-graphic-p) (find-font (font-spec :name "Iosevka")))
+  (if (eq system-type 'darwin)
+	  (set-face-attribute 'default nil :font "Iosevka" :height 140 :weight 'medium)
+	(set-face-attribute 'default nil :font "Iosevka" :height 120)))
+;; always highlight current line
 (global-hl-line-mode 1)
+;; hide extras
 (setq inhibit-startup-message t)
 (if (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
 (if (fboundp 'tool-bar-mode) (tool-bar-mode -1))
 (if (fboundp 'menu-bar-mode) (menu-bar-mode -1))
-;; (setq blink-cursor-blinks 0) ;; don't stop blinking
 ;; don't blink cursor
 (blink-cursor-mode -1)
+;; replace bell with modeline blink
 (setq visible-bell nil)
 (setq ring-bell-function (lambda ()
                            (invert-face 'mode-line)
                            (run-with-timer 0.1 nil 'invert-face 'mode-line)))
-(put 'scroll-left 'disabled nil)
+
 ;; show column numbers in the modeline
 (setq column-number-mode t)
 ;; make modeline compact if it doesn't fit on the screen
 (setq mode-line-compact 'long)
 ;; remove dashes in the end of the modeline (in -nw)
 (setopt mode-line-end-spaces nil)
-;; right margin indicator in source code
+;; right margin indicator in source code (prog mode)
 (setq-default fill-column 120)
 (add-hook 'prog-mode-hook 'display-fill-column-indicator-mode)
+;; replace vertical border divider in text mode with a neat one
+(set-display-table-slot standard-display-table 'vertical-border (make-glyph-code ?│))
 
 (use-package zenburn-theme
   :ensure t
@@ -77,10 +79,7 @@
    '(font-lock-number-face ((t (:foreground "#a999bb"))))
    '(completions-highlight ((t (:foreground "#000000" :background "#FFCCAA"))))
    )
-  (enable-theme 'zenburn)
-  )
-
-;; (set-face-background 'default "undefined")
+  (enable-theme 'zenburn))
 
 ;; --------------------------- custom functions --------------------------------
 (defun smart-beginning-of-line ()
@@ -120,18 +119,6 @@ actually became a place between strings instead"
             (setq beg (line-beginning-position) end (line-end-position)))
         (comment-or-uncomment-region beg end)))
 
-;; (defun copy-word ()
-;;  "Select a word under cursor and copy it into kill ring.
-;; “word” here is considered any alphanumeric sequence with “_” or “-”."
-;;   (interactive)
-;;   (let (b1 b2)
-;;     (skip-chars-backward "-_A-Za-z0-9")
-;;     (setq b1 (point))
-;;     (skip-chars-forward "-_A-Za-z0-9")
-;;     (setq b2 (point))
-;;     (kill-ring-save b1 b2)
-;;     (set-mark b1)))
-
 (defun set-exec-path-from-shell-PATH ()
   (let ((path-from-shell (replace-regexp-in-string
                           "[ \t\n]*$"
@@ -166,14 +153,15 @@ actually became a place between strings instead"
   (flymake-show-buffer-diagnostics)
   (select-window (get-buffer-window (flymake--diagnostics-buffer-name))))
 
-;; --------------------------- keybindings and mouse ----------------------------------------------
-
+;; --------------------------- keybindings and mouse ---------------------------
+;; TODO: replace f1 with help (eldoc show info)
 (global-set-key (kbd "<f1>") 'ibuffer)
 ;; f2 -- termux meta key
 (global-set-key [S-f3] 'kmacro-start-macro-or-insert-counter)
 (global-set-key [f3] 'kmacro-end-or-call-macro)
 ;; (global-set-key [f4] 'git-blame-line)
-;; (global-set-key [f5] ')
+(global-set-key [f5] 'flyspell-mode)
+;; (global-set-key [S-f5] 'flyspell-mode)
 ;; (global-set-key [f6] ')
 ;; (global-set-key [f7] ')
 ;; (global-set-key [f8] ')
@@ -189,17 +177,18 @@ actually became a place between strings instead"
 (define-key completion-in-region-mode-map (kbd "M-p") #'minibuffer-previous-completion)
 (define-key completion-in-region-mode-map (kbd "M-n") #'minibuffer-next-completion)
 
+;; copy behavior from terminal
 (global-set-key "\C-w" 'backward-kill-word)
 (global-set-key "\C-h" 'backward-delete-char)
-(global-set-key [(hyper h)] 'help-command)
-;; (global-set-key "\C-x\C-k" 'kill-region)
-(global-set-key "\C-c\C-k" 'kill-region)
+
+(global-set-key (kbd "C-c k") 'kill-region)
 (global-set-key (kbd "C-c w") 'mark-whole-word)
 (global-set-key (kbd "C-c s") 'select-string)
 ;; (global-set-key [M-up]   (lambda () (interactive) (scroll-down 4)))
 ;; (global-set-key [M-down] (lambda () (interactive) (scroll-up 4)))
 ;; (global-set-key [?\s-/]       'comment-or-uncomment-region-or-line)
 ;; (global-set-key (kbd "C-c /") 'comment-or-uncomment-region-or-line)
+
 ;; reassigned from standard comment-dwim because I don't use it
 (global-set-key (kbd "M-;") 'comment-or-uncomment-region-or-line)
 (global-set-key (kbd "C-a") 'smart-beginning-of-line)
@@ -223,22 +212,28 @@ actually became a place between strings instead"
 (setq mouse-wheel-scroll-amount '(1 ((shift) . 1))) ;; one line at a time
 ;(setq mouse-wheel-progressive-speed nil) ;; don't accelerate scrolling
 
-;; -------------------------- modes and hooks ----------------------------------
+;; -------------------------- behavior -----------------------------------------
+;; mouse integration in terminal
+(xterm-mouse-mode 1)
 
-(set-display-table-slot standard-display-table 'vertical-border (make-glyph-code ?│))
-(xterm-mouse-mode 1) ;; mouse integration in terminal
+;; completions
 (setq completions-max-height 16)
 ;; (setq completions-format "vertical")
 ;; suppress useless help header message in completion buffer
 (setq completion-show-help nil)
 (setq completions-detailed t)
+(setopt tab-always-indent 'complete)
+(setq read-file-name-completion-ignore-case t)
+
 (autoload 'ibuffer "ibuffer" "List buffers." t)
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
-(electric-indent-mode -1)
+;; (electric-indent-mode -1)
 (setq save-interprogram-paste-before-kill t)
 (global-auto-revert-mode 1)
-(when window-system (set-exec-path-from-shell-PATH))
-(setq native-comp-async-report-warnings-errors 'silent)
+;; (when window-system (set-exec-path-from-shell-PATH))
+
+;; suppress spam from natice compilation
+;; (setq native-comp-async-report-warnings-errors 'silent)
 
 (setq-default indent-tabs-mode t)
 (setq-default tab-width 4)
@@ -276,6 +271,7 @@ actually became a place between strings instead"
       kept-new-versions 5    ; keep some new versions
       kept-old-versions 2)   ; and some old ones, too
 
+;; auto-install treesit libraries
 (use-package treesit-auto
   :ensure t
   :custom
@@ -283,12 +279,6 @@ actually became a place between strings instead"
   :config
   (treesit-auto-add-to-auto-mode-alist 'all)
   (global-treesit-auto-mode))
-
-;; (fido-vertical-mode)
-
-;; (use-package idle-highlight-mode
-;;   :config (setq idle-highlight-idle-time 0.2)
-;;   :hook ((prog-mode text-mode) . idle-highlight-mode))
 
 ;; (defun flymake-after-change-function (start stop _len)
 ;;   "Start syntax check for current buffer if it isn't already running."
@@ -298,11 +288,10 @@ actually became a place between strings instead"
 ;;       (flymake-start-syntax-check))
 ;;     (setq flymake-last-change-time (flymake-float-time))))
 
-(use-package flymake
-  :config
-  (setq flymake-start-syntax-check-on-newline t)
-  ;; (setq flymake-no-changes-timeout nil)
-)
+;; (use-package flymake
+;;   :config
+;;   (setq flymake-start-syntax-check-on-newline t))
+
 ;; (setq flymake-start-syntax-check-on-newline t)
 ;; (setq flymake-no-changes-timeout 1)
 (use-package eglot
@@ -323,14 +312,13 @@ actually became a place between strings instead"
   :hook
   (prog-mode . eglot-ensure))
 
-(add-to-list 'major-mode-remap-alist '(python-mode . python-ts-mode))
-
 (add-hook 'python-mode-hook
-      (lambda ()
-        (setq indent-tabs-mode nil)
-        (setq tab-width 4)
-        (setq python-indent 4)))
+		  (lambda ()
+			(setq indent-tabs-mode nil)
+			(setq tab-width 4)
+			(setq python-indent 4)))
 
+(add-to-list 'major-mode-remap-alist '(python-mode . python-ts-mode))
 
 ;; c/c++ style settings
 (defun linux-c-mode ()
@@ -358,7 +346,6 @@ actually became a place between strings instead"
 (add-hook 'c-mode-hook  (lambda () (modify-syntax-entry ?_ "w")))
 (add-hook 'c++-mode-hook  (lambda () (modify-syntax-entry ?_ "w")))
 (add-hook 'python-ts-mode-hook  (lambda () (modify-syntax-entry ?_ "w")))
-;; (add-hook 'c++-mode-hook (lambda () (setq flycheck-gcc-language-standard "c++14")))
 ;; (add-hook 'c++-mode-hook (lambda () (setq c-set-offset 'substatement-open 0)))
 
 ;; run garbage collect when emacs loses focus
@@ -368,21 +355,10 @@ actually became a place between strings instead"
 
 ;; enable C-x C-u: upcase-region
 (put 'upcase-region 'disabled nil)
-(setopt tab-always-indent 'complete)
-(setq read-file-name-completion-ignore-case t)
 
-;; (use-package magit
-;;   :ensure t
-;;   :bind (("C-x g" . magit-status)))
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(package-selected-packages nil))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
+;; (add-to-list 'display-buffer-alist
+;;                '("^\\*eldoc.*\\*"
+;;                 (display-buffer-reuse-window display-buffer-in-side-window)
+;;                 (dedicated . t)
+;;                 (side . right)
+;;                 (inhibit-same-window . t)))

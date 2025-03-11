@@ -23,3 +23,9 @@ keys
 	C-c s - select sting (between " ")
 	C-c w - select word (mode-defined, c/c++/python add _ to consider a word)
 	C-x v g - git blame
+	C-x C-b - ibuffer
+	S-f3 - start macro
+	f3 - end macro or call macro
+	f12 - flymake mode on/off
+	S-f12 - show flymake diagnostics buffer and switch to it
+	M-f12 - close flymake diagnostics buffer
