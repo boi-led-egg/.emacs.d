@@ -10,7 +10,11 @@
 		(package-install package)))
 
 ;; ---------------------------------- appearance -------------------------------
-(set-frame-font "Iosevka 12")
+;; (set-frame-font "Iosevka 12")
+(if (eq system-type 'darwin)
+	(set-face-attribute 'default nil :font "Iosevka" :height 140 :weight 'medium)
+  (set-face-attribute 'default nil :font "Iosevka" :height 120))
+;; (set-face-attribute 'default nil :font "Iosevka" :height 120 :weight 'medium)
 (global-hl-line-mode 1)
 (setq inhibit-startup-message t)
 (if (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
@@ -101,6 +105,12 @@ actually became a place between strings instead"
    (setq b2 (point))
    (set-mark b1)))
 
+(defun mark-whole-word ()
+  "Like mark-word, but the whole word from the beginning"
+  (interactive)
+  (backward-word)
+  (mark-word))
+
 (defun comment-or-uncomment-region-or-line ()
 "Comments or uncomments the region or the current line if there's no active region."
     (interactive)
@@ -110,17 +120,17 @@ actually became a place between strings instead"
             (setq beg (line-beginning-position) end (line-end-position)))
         (comment-or-uncomment-region beg end)))
 
-(defun copy-word ()
- "Select a word under cursor and copy it into kill ring.
-“word” here is considered any alphanumeric sequence with “_” or “-”."
-  (interactive)
-  (let (b1 b2)
-    (skip-chars-backward "-_A-Za-z0-9")
-    (setq b1 (point))
-    (skip-chars-forward "-_A-Za-z0-9")
-    (setq b2 (point))
-    (kill-ring-save b1 b2)
-    (set-mark b1)))
+;; (defun copy-word ()
+;;  "Select a word under cursor and copy it into kill ring.
+;; “word” here is considered any alphanumeric sequence with “_” or “-”."
+;;   (interactive)
+;;   (let (b1 b2)
+;;     (skip-chars-backward "-_A-Za-z0-9")
+;;     (setq b1 (point))
+;;     (skip-chars-forward "-_A-Za-z0-9")
+;;     (setq b2 (point))
+;;     (kill-ring-save b1 b2)
+;;     (set-mark b1)))
 
 (defun set-exec-path-from-shell-PATH ()
   (let ((path-from-shell (replace-regexp-in-string
@@ -184,7 +194,8 @@ actually became a place between strings instead"
 (global-set-key [(hyper h)] 'help-command)
 ;; (global-set-key "\C-x\C-k" 'kill-region)
 (global-set-key "\C-c\C-k" 'kill-region)
-
+(global-set-key (kbd "C-c w") 'mark-whole-word)
+(global-set-key (kbd "C-c s") 'select-string)
 ;; (global-set-key [M-up]   (lambda () (interactive) (scroll-down 4)))
 ;; (global-set-key [M-down] (lambda () (interactive) (scroll-up 4)))
 ;; (global-set-key [?\s-/]       'comment-or-uncomment-region-or-line)
@@ -206,6 +217,9 @@ actually became a place between strings instead"
 (global-set-key (kbd "C-c C-y") '(lambda ()
     (interactive) (popup-menu 'yank-menu)))
 
+;; replace buffer-menu with ibuffer
+(global-set-key (kbd "C-x C-b") #'ibuffer)
+
 (setq mouse-wheel-scroll-amount '(1 ((shift) . 1))) ;; one line at a time
 ;(setq mouse-wheel-progressive-speed nil) ;; don't accelerate scrolling
 
@@ -226,20 +240,15 @@ actually became a place between strings instead"
 (when window-system (set-exec-path-from-shell-PATH))
 (setq native-comp-async-report-warnings-errors 'silent)
 
-;; (setq-default indent-tabs-mode nil)
-;; (setq-default tab-width 4)
+(setq-default indent-tabs-mode t)
+(setq-default tab-width 4)
+(setq cmake-tab-width 4)
+
 ;; (setq indent-line-function 'insert-tab)
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(indent-line-function 'insert-tab t)
- '(indent-tabs-mode t)
- '(package-selected-packages nil)
- '(tab-width 4))
+
 (add-hook 'text-mode-hook
       (lambda() (setq indent-line-function 'insert-tab)))
+
 ; Treat 'y' or <CR> as yes, 'n' as no.
 (fset 'yes-or-no-p 'y-or-n-p)
 (define-key query-replace-map [return] 'act)
@@ -248,12 +257,6 @@ actually became a place between strings instead"
 ;; dired
 (put 'dired-find-alternate-file 'disabled nil)
 (setf dired-kill-when-opening-new-dired-buffer t)
-
-;; Disable all version control
-;; (setq vc-handled-backends nil)
-
-
-(setq cmake-tab-width 4)
 
 ;; Put backup files neatly away
 (let ((backup-dir "~/.backups-emacs/backups")
@@ -273,6 +276,13 @@ actually became a place between strings instead"
       kept-new-versions 5    ; keep some new versions
       kept-old-versions 2)   ; and some old ones, too
 
+(use-package treesit-auto
+  :ensure t
+  :custom
+  (treesit-auto-install 'prompt)
+  :config
+  (treesit-auto-add-to-auto-mode-alist 'all)
+  (global-treesit-auto-mode))
 
 ;; (fido-vertical-mode)
 
@@ -321,6 +331,7 @@ actually became a place between strings instead"
         (setq tab-width 4)
         (setq python-indent 4)))
 
+
 ;; c/c++ style settings
 (defun linux-c-mode ()
   (interactive)
@@ -346,6 +357,7 @@ actually became a place between strings instead"
 ;; (add-hook 'c-mode-common-hook 'linux-c-mode)
 (add-hook 'c-mode-hook  (lambda () (modify-syntax-entry ?_ "w")))
 (add-hook 'c++-mode-hook  (lambda () (modify-syntax-entry ?_ "w")))
+(add-hook 'python-ts-mode-hook  (lambda () (modify-syntax-entry ?_ "w")))
 ;; (add-hook 'c++-mode-hook (lambda () (setq flycheck-gcc-language-standard "c++14")))
 ;; (add-hook 'c++-mode-hook (lambda () (setq c-set-offset 'substatement-open 0)))
 
@@ -358,3 +370,19 @@ actually became a place between strings instead"
 (put 'upcase-region 'disabled nil)
 (setopt tab-always-indent 'complete)
 (setq read-file-name-completion-ignore-case t)
+
+;; (use-package magit
+;;   :ensure t
+;;   :bind (("C-x g" . magit-status)))
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages nil))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )

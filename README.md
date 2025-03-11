@@ -20,3 +20,6 @@ keys
 	C-M-u - go up in syntax tree structure (loop->function->class etc)
 	M-? - find references
 	C-x p f - project find file (M-up, M-down to iterate over, M-v to switch to the buffer)
+	C-c s - select sting (between " ")
+	C-c w - select word (mode-defined, c/c++/python add _ to consider a word)
+	C-x v g - git blame
