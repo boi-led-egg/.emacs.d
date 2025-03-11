@@ -1,6 +1,3 @@
-;; increase gc pool
-(setq gc-cons-threshold (* 1024 1024 16))
-
 ;; add melpa to the list of packages
 (require 'package)
 (add-to-list 'package-archives
@@ -8,37 +5,46 @@
 (package-initialize)
 
 ;; ---------------------------------- appearance -------------------------------
-;; text mode doesn't need to set the font. Also ignore if not found
-(when (and (display-graphic-p) (find-font (font-spec :name "Iosevka")))
-  (if (eq system-type 'darwin)
-	  (set-face-attribute 'default nil :font "Iosevka" :height 140 :weight 'medium)
-	(set-face-attribute 'default nil :font "Iosevka" :height 120)))
-;; always highlight current line
-(global-hl-line-mode 1)
-;; hide extras
-(setq inhibit-startup-message t)
-(if (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
-(if (fboundp 'tool-bar-mode) (tool-bar-mode -1))
-(if (fboundp 'menu-bar-mode) (menu-bar-mode -1))
-;; don't blink cursor
-(blink-cursor-mode -1)
-;; replace bell with modeline blink
-(setq visible-bell nil)
-(setq ring-bell-function (lambda ()
-                           (invert-face 'mode-line)
-                           (run-with-timer 0.1 nil 'invert-face 'mode-line)))
 
-;; show column numbers in the modeline
-(setq column-number-mode t)
-;; make modeline compact if it doesn't fit on the screen
-(setq mode-line-compact 'long)
-;; remove dashes in the end of the modeline (in -nw)
-(setopt mode-line-end-spaces nil)
-;; right margin indicator in source code (prog mode)
-(setq-default fill-column 120)
-(add-hook 'prog-mode-hook 'display-fill-column-indicator-mode)
-;; replace vertical border divider in text mode with a neat one
-(set-display-table-slot standard-display-table 'vertical-border (make-glyph-code ?│))
+(use-package emacs
+  :hook
+  (prog-mode . display-fill-column-indicator-mode)
+
+  :config
+  ;; increase gc pool
+  (setq gc-cons-threshold (* 1024 1024 16))
+
+  ;; always highlight current line
+  (global-hl-line-mode 1)
+  ;; hide extras
+  (setq inhibit-startup-message t)
+  (if (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
+  (if (fboundp 'tool-bar-mode) (tool-bar-mode -1))
+  (if (fboundp 'menu-bar-mode) (menu-bar-mode -1))
+  ;; don't blink cursor
+  (blink-cursor-mode -1)
+  ;; replace bell with modeline blink
+  (setq visible-bell nil)
+  (setq ring-bell-function (lambda ()
+							 (invert-face 'mode-line)
+							 (run-with-timer 0.1 nil 'invert-face 'mode-line)))
+
+  ;; text mode doesn't need to set the font. Also ignore if not found
+  (when (and (display-graphic-p) (find-font (font-spec :name "Iosevka")))
+	(if (eq system-type 'darwin)
+		(set-face-attribute 'default nil :font "Iosevka" :height 140 :weight 'medium)
+	  (set-face-attribute 'default nil :font "Iosevka" :height 120)))
+
+  ;; show column numbers in the modeline
+  (setq column-number-mode t)
+  ;; make modeline compact if it doesn't fit on the screen
+  (setq mode-line-compact 'long)
+  ;; remove dashes in the end of the modeline (in -nw)
+  (setopt mode-line-end-spaces nil)
+  ;; right margin indicator in source code (prog mode)
+  (setq-default fill-column 120)
+  ;; replace vertical border divider in text mode with a neat one
+  (set-display-table-slot standard-display-table 'vertical-border (make-glyph-code ?│)))
 
 (use-package zenburn-theme
   :ensure t
@@ -119,14 +125,14 @@ actually became a place between strings instead"
             (setq beg (line-beginning-position) end (line-end-position)))
         (comment-or-uncomment-region beg end)))
 
-(defun set-exec-path-from-shell-PATH ()
-  (let ((path-from-shell (replace-regexp-in-string
-                          "[ \t\n]*$"
-                          ""
-                          (shell-command-to-string "$SHELL --login -i -c 'echo $PATH'"))))
-    (setenv "PATH" path-from-shell)
-    (setq eshell-path-env path-from-shell) ; for eshell users
-    (setq exec-path (split-string path-from-shell path-separator))))
+;; (defun set-exec-path-from-shell-PATH ()
+;;   (let ((path-from-shell (replace-regexp-in-string
+;;                           "[ \t\n]*$"
+;;                           ""
+;;                           (shell-command-to-string "$SHELL --login -i -c 'echo $PATH'"))))
+;;     (setenv "PATH" path-from-shell)
+;;     (setq eshell-path-env path-from-shell) ; for eshell users
+;;     (setq exec-path (split-string path-from-shell path-separator))))
 
 (defun prev-window ()
   (interactive)
@@ -160,11 +166,12 @@ actually became a place between strings instead"
 (global-set-key [S-f3] 'kmacro-start-macro-or-insert-counter)
 (global-set-key [f3] 'kmacro-end-or-call-macro)
 ;; (global-set-key [f4] 'git-blame-line)
-(global-set-key [f5] 'flyspell-mode)
+(global-set-key [f5] 'flyspell-prog-mode)
 ;; (global-set-key [S-f5] 'flyspell-mode)
 ;; (global-set-key [f6] ')
 ;; (global-set-key [f7] ')
-;; (global-set-key [f8] ')
+(global-set-key [f8] 'imenu-list)
+(global-set-key [C-f8] 'imenu-list-quit-window)
 (global-set-key [f9] 'display-line-numbers-mode)
 ;; f10 - default emacs menu
 ;; f11 - OS fullscreen
@@ -356,9 +363,13 @@ actually became a place between strings instead"
 ;; enable C-x C-u: upcase-region
 (put 'upcase-region 'disabled nil)
 
-;; (add-to-list 'display-buffer-alist
-;;                '("^\\*eldoc.*\\*"
-;;                 (display-buffer-reuse-window display-buffer-in-side-window)
-;;                 (dedicated . t)
-;;                 (side . right)
-;;                 (inhibit-same-window . t)))
+(use-package helm
+  :ensure t)
+
+(use-package marginalia
+  :ensure t
+  :init
+  (marginalia-mode))
+
+(use-package imenu-list
+  :ensure t)
