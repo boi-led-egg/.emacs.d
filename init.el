@@ -44,7 +44,8 @@
   ;; right margin indicator in source code (prog mode)
   (setq-default fill-column 120)
   ;; replace vertical border divider in text mode with a neat one
-  (set-display-table-slot standard-display-table 'vertical-border (make-glyph-code ?│)))
+  (set-display-table-slot standard-display-table 'vertical-border (make-glyph-code ?│))
+  (setq org-startup-trunacted nil))
 
 (use-package zenburn-theme
   :ensure t
@@ -54,7 +55,7 @@
           ("zenburn-bg-1"     . "#101010")
           ("zenburn-bg-08"    . "#151515")
           ("zenburn-bg-05"    . "#181818")
-          ("zenburn-bg"       . "#202020")
+          ("zenburn-bg"       . "#232320")
           ("zenburn-bg+05"    . "#2A2A2A")
           ("zenburn-bg+1"     . "#2F2F2F")
           ("zenburn-bg+2"     . "#3F3F3F")
@@ -361,7 +362,7 @@ actually became a place between strings instead"
               (lambda () (unless (frame-focus-state) (garbage-collect))))
 
 ;; enable C-x C-u: upcase-region
-(put 'upcase-region 'disabled nil)
+;; (put 'upcase-region 'disabled nil)
 
 (use-package helm
   :ensure t)
@@ -373,3 +374,13 @@ actually became a place between strings instead"
 
 (use-package imenu-list
   :ensure t)
+
+(use-package direnv
+  :ensure t
+  :config (direnv-mode))
+
+(use-package exec-path-from-shell
+  :ensure t
+  :config
+  (when (eq system-type 'darwin)
+	(exc-path-from-shell-initialize)))

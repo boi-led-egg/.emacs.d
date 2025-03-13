@@ -1,7 +1,21 @@
 setting up language server
 	pip install "python-lsp-server[all]"
 	pip install pylsp-mypy
+setting upo spell checking
 	apt/brew install ispell
+setting up direnv (automatic python venv)
+	apt/brew install direnv
+	add to .bashrc
+		eval "$(direnv hook bash)"
+	or add to .zshrc
+		eval "$(direnv hook zsh)"
+	in the python project create a venv
+	   python3 -m venv venv
+	in the python project dir create .envrc with
+	   layout python3
+	   source venv/bin/activate
+	and run "direnv allow ."
+
 setting up project-specific configuration (.dir-locals.el)
 	...
 keys
