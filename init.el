@@ -61,15 +61,15 @@
           ("zenburn-bg+2"     . "#3F3F3F")
           ("zenburn-bg+3"     . "#4F4F4F")
 
-          ("zenburn-red-6"    . "#7C2323")
-          ("zenburn-red-5"    . "#8C3333")
-          ("zenburn-red-4"    . "#9C4343")
-          ("zenburn-red-3"    . "#AC5353")
-          ("zenburn-red-2"    . "#BC6363")
-          ("zenburn-red-1"    . "#CC7373")
-          ("zenburn-red"      . "#DC8383")
-          ("zenburn-red+1"    . "#EC9393")
-          ("zenburn-red+2"    . "#FCA3A3")
+          ("zenburn-red-6"    . "#7C1313")
+          ("zenburn-red-5"    . "#8C2323")
+          ("zenburn-red-4"    . "#9C3333")
+          ("zenburn-red-3"    . "#AC4343")
+          ("zenburn-red-2"    . "#BC5353")
+          ("zenburn-red-1"    . "#CC6363")
+          ("zenburn-red"      . "#DC7373")
+          ("zenburn-red+1"    . "#EC8383")
+          ("zenburn-red+2"    . "#FC9393")
 
           ("zenburn-orange"   . "#EFBF8F")
 
@@ -165,23 +165,25 @@ actually became a place between strings instead"
 	(cond
 		((eq fill-column 100) (setq fill-column 120) (message "Setting fill-column to 120"))
 		((eq fill-column 120) (setq fill-column 100) (message "Setting fill-column to 100"))))
+
 ;; --------------------------- keybindings and mouse ---------------------------
 ;; TODO: replace f1 with help (eldoc show info custom function)
 (global-set-key (kbd "<f1>") 'ibuffer)
 ;; f2 -- termux meta key
 (global-set-key [S-f3] 'kmacro-start-macro-or-insert-counter)
 (global-set-key [f3] 'kmacro-end-or-call-macro)
-;; (global-set-key [f4] 'git-blame-line)
+;; (global-set-key [f4])
 (global-set-key [f5] 'flyspell-prog-mode)
 ;; (global-set-key [S-f5] 'flyspell-mode)
 ;; (global-set-key [f6] ')
 ;; (global-set-key [f7] ')
 (global-set-key [f8] 'imenu-list)
-(global-set-key [C-f8] 'imenu-list-quit-window)
+;; (global-set-key [C-f8] 'imenu-list-quit-window)
 ;; display modes
 (global-set-key [f9] 'display-line-numbers-mode)
 (global-set-key [S-f9] 'whitespace-mode)
 (global-set-key [M-f9] 'cycle-fill-column)
+;; (global-set-key [M-f9] ') ;; todo: indent guides? also KDE seems to use it
 ;; f10 - default emacs menu
 ;; f11 - OS fullscreen
 ;; flymake keys
@@ -326,7 +328,7 @@ actually became a place between strings instead"
                              :autopep8 (:enabled nil)
                              :mypy (:enabled t)
 										  )))))
-  (setq eglot-extend-to-xref t)
+  ;; (setq eglot-extend-to-xref t)
   :hook
   (prog-mode . eglot-ensure))
 
@@ -359,11 +361,12 @@ actually became a place between strings instead"
 
 (setq lisp-indent-offset 4)
 
-; Modify C/C++ syntax tables to thread underscore sign '_' as a part of word
+;; Modify C/C++ syntax tables to thread underscore sign '_' as a part of word
 ;; (add-hook 'c-mode-common-hook 'linux-c-mode)
 (add-hook 'c-mode-hook  (lambda () (modify-syntax-entry ?_ "w")))
 (add-hook 'c++-mode-hook  (lambda () (modify-syntax-entry ?_ "w")))
 (add-hook 'python-ts-mode-hook  (lambda () (modify-syntax-entry ?_ "w")))
+(modify-syntax-entry ?- "w" emacs-lisp-mode-syntax-table)
 ;; (add-hook 'c++-mode-hook (lambda () (setq c-set-offset 'substatement-open 0)))
 
 ;; run garbage collect when emacs loses focus
