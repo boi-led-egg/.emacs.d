@@ -160,6 +160,11 @@ actually became a place between strings instead"
   (flymake-show-buffer-diagnostics)
   (select-window (get-buffer-window (flymake--diagnostics-buffer-name))))
 
+(defun cycle-fill-column ()
+	(interactive)
+	(cond
+		((eq fill-column 100) (setq fill-column 120) (message "Setting fill-column to 120"))
+		((eq fill-column 120) (setq fill-column 100) (message "Setting fill-column to 100"))))
 ;; --------------------------- keybindings and mouse ---------------------------
 ;; TODO: replace f1 with help (eldoc show info custom function)
 (global-set-key (kbd "<f1>") 'ibuffer)
@@ -176,7 +181,7 @@ actually became a place between strings instead"
 ;; display modes
 (global-set-key [f9] 'display-line-numbers-mode)
 (global-set-key [S-f9] 'whitespace-mode)
-;; (global-set-key [C-f9] 'cycle-fill-column) ;; TODO write the function
+(global-set-key [M-f9] 'cycle-fill-column)
 ;; f10 - default emacs menu
 ;; f11 - OS fullscreen
 ;; flymake keys
