@@ -375,12 +375,15 @@ actually became a place between strings instead"
 (use-package imenu-list
   :ensure t)
 
-(use-package direnv
-  :ensure t
-  :config (direnv-mode))
-
 (use-package exec-path-from-shell
   :ensure t
   :config
   (when (eq system-type 'darwin)
 	(exc-path-from-shell-initialize)))
+
+;; (use-package direnv
+;;   :ensure t
+;;   :config (direnv-mode))
+
+(use-package envrc
+  :hook (after-init . envrc-global-mode))
