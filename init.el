@@ -161,7 +161,7 @@ actually became a place between strings instead"
   (select-window (get-buffer-window (flymake--diagnostics-buffer-name))))
 
 ;; --------------------------- keybindings and mouse ---------------------------
-;; TODO: replace f1 with help (eldoc show info)
+;; TODO: replace f1 with help (eldoc show info custom function)
 (global-set-key (kbd "<f1>") 'ibuffer)
 ;; f2 -- termux meta key
 (global-set-key [S-f3] 'kmacro-start-macro-or-insert-counter)
@@ -173,9 +173,13 @@ actually became a place between strings instead"
 ;; (global-set-key [f7] ')
 (global-set-key [f8] 'imenu-list)
 (global-set-key [C-f8] 'imenu-list-quit-window)
+;; display modes
 (global-set-key [f9] 'display-line-numbers-mode)
+(global-set-key [S-f9] 'whitespace-mode)
+;; (global-set-key [C-f9] 'cycle-fill-column) ;; TODO write the function
 ;; f10 - default emacs menu
 ;; f11 - OS fullscreen
+;; flymake keys
 (define-key prog-mode-map [f12] 'flymake-mode)
 (define-key prog-mode-map [S-f12] 'flymake-show-buffer-diagnostics-focus)
 ;; close diagnostics window from either original buffer window or diag window
@@ -316,7 +320,8 @@ actually became a place between strings instead"
                              :yapf (:enabled nil)
                              :autopep8 (:enabled nil)
                              :mypy (:enabled t)
-                             )))))
+										  )))))
+  (setq eglot-extend-to-xref t)
   :hook
   (prog-mode . eglot-ensure))
 
