@@ -33,6 +33,7 @@ keys
 	M-k = kill sentence
 	M-/ = dabbrev (very useful, especially if you’re allergic to company).
 	C-M-u - go up in syntax tree structure (loop->function->class etc)
+	C-M-a - treesit go to defun
 	M-? - find references
 	C-x p f - project find file (M-up, M-down to iterate over, M-v to switch to the buffer)
 	C-c s - select sting (between " ")

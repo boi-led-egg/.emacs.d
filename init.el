@@ -7,118 +7,119 @@
 ;; ---------------------------------- appearance -------------------------------
 
 (use-package emacs
-  :hook
-  (prog-mode . display-fill-column-indicator-mode)
+	:hook
+	(prog-mode . display-fill-column-indicator-mode)
 
-  :config
-  ;; increase gc pool
-  (setq gc-cons-threshold (* 1024 1024 16))
+	:config
+	;; increase gc pool
+	(setq gc-cons-threshold (* 1024 1024 16))
 
-  ;; always highlight current line
-  (global-hl-line-mode 1)
-  ;; hide extras
-  (setq inhibit-startup-message t)
-  (if (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
-  (if (fboundp 'tool-bar-mode) (tool-bar-mode -1))
-  (if (fboundp 'menu-bar-mode) (menu-bar-mode -1))
-  ;; don't blink cursor
-  (blink-cursor-mode -1)
-  ;; replace bell with modeline blink
-  (setq visible-bell nil)
-  (setq ring-bell-function (lambda ()
-							 (invert-face 'mode-line)
-							 (run-with-timer 0.1 nil 'invert-face 'mode-line)))
+	;; always highlight current line
+	(global-hl-line-mode 1)
+	;; hide extras
+	(setq inhibit-startup-message t)
+	(if (fboundp 'scroll-bar-mode) (scroll-bar-mode -1))
+	(if (fboundp 'tool-bar-mode) (tool-bar-mode -1))
+	(if (fboundp 'menu-bar-mode) (menu-bar-mode -1))
+	;; don't blink cursor
+	(blink-cursor-mode -1)
+	;; replace bell with modeline blink
+	(setq visible-bell nil)
+	(setq ring-bell-function (lambda ()
+								 (invert-face 'mode-line)
+								 (run-with-timer 0.1 nil 'invert-face 'mode-line)))
 
-  ;; text mode doesn't need to set the font. Also ignore if not found
-  (when (and (display-graphic-p) (find-font (font-spec :name "Iosevka")))
-	(if (eq system-type 'darwin)
-		(set-face-attribute 'default nil :font "Iosevka" :height 140 :weight 'medium)
-	  (set-face-attribute 'default nil :font "Iosevka" :height 120)))
+	;; text mode doesn't need to set the font. Also ignore if not found
+	(when (and (display-graphic-p) (find-font (font-spec :name "Iosevka")))
+		(if (eq system-type 'darwin)
+			(set-face-attribute 'default nil :font "Iosevka" :height 140 :weight 'medium)
+			(set-face-attribute 'default nil :font "Iosevka" :height 120)))
 
-  ;; show column numbers in the modeline
-  (setq column-number-mode t)
-  ;; make modeline compact if it doesn't fit on the screen
-  (setq mode-line-compact 'long)
-  ;; remove dashes in the end of the modeline (in -nw)
-  (setopt mode-line-end-spaces nil)
-  ;; right margin indicator in source code (prog mode)
-  (setq-default fill-column 120)
-  ;; replace vertical border divider in text mode with a neat one
-  (set-display-table-slot standard-display-table 'vertical-border (make-glyph-code ?│))
-  (setq org-startup-trunacted nil))
+	;; show column numbers in the modeline
+	(setq column-number-mode t)
+	;; make modeline compact if it doesn't fit on the screen
+	(setq mode-line-compact 'long)
+	;; remove dashes in the end of the modeline (in -nw)
+	(setopt mode-line-end-spaces nil)
+	;; right margin indicator in source code (prog mode)
+	(setq-default fill-column 120)
+	;; replace vertical border divider in text mode with a neat one
+	(set-display-table-slot standard-display-table 'vertical-border (make-glyph-code ?│))
+	(setq org-startup-trunacted nil)
+	(setq-default indent-tabs-mode nil))
 
 (use-package zenburn-theme
-  :ensure t
-  :init
-  (setq zenburn-override-colors-alist
+	:ensure t
+	:init
+	(setq zenburn-override-colors-alist
         '(("zenburn-bg-2"     . "#000000")
-          ("zenburn-bg-1"     . "#101010")
-          ("zenburn-bg-08"    . "#151515")
-          ("zenburn-bg-05"    . "#181818")
-          ("zenburn-bg"       . "#232320")
-          ("zenburn-bg+05"    . "#2A2A2A")
-          ("zenburn-bg+1"     . "#2F2F2F")
-          ("zenburn-bg+2"     . "#3F3F3F")
-          ("zenburn-bg+3"     . "#4F4F4F")
+			 ("zenburn-bg-1"     . "#101010")
+			 ("zenburn-bg-08"    . "#151515")
+			 ("zenburn-bg-05"    . "#181818")
+			 ("zenburn-bg"       . "#232320")
+			 ("zenburn-bg+05"    . "#2A2A2A")
+			 ("zenburn-bg+1"     . "#2F2F2F")
+			 ("zenburn-bg+2"     . "#3F3F3F")
+			 ("zenburn-bg+3"     . "#4F4F4F")
 
-          ("zenburn-red-6"    . "#7C1313")
-          ("zenburn-red-5"    . "#8C2323")
-          ("zenburn-red-4"    . "#9C3333")
-          ("zenburn-red-3"    . "#AC4343")
-          ("zenburn-red-2"    . "#BC5353")
-          ("zenburn-red-1"    . "#CC6363")
-          ("zenburn-red"      . "#DC7373")
-          ("zenburn-red+1"    . "#EC8383")
-          ("zenburn-red+2"    . "#FC9393")
+			 ("zenburn-red-6"    . "#7C1313")
+			 ("zenburn-red-5"    . "#8C2323")
+			 ("zenburn-red-4"    . "#9C3333")
+			 ("zenburn-red-3"    . "#AC4343")
+			 ("zenburn-red-2"    . "#BC5353")
+			 ("zenburn-red-1"    . "#CC6363")
+			 ("zenburn-red"      . "#DC7373")
+			 ("zenburn-red+1"    . "#EC8383")
+			 ("zenburn-red+2"    . "#FC9393")
 
-          ("zenburn-orange"   . "#EFBF8F")
+			 ("zenburn-orange"   . "#EFBF8F")
 
-          ("zenburn-cyan"     . "#93c6e3")
-          ))
-  :config
-  (load-theme 'zenburn t)
-  (custom-theme-set-faces
-   'zenburn
-   '(region ((t (:background "#491759" :extend t)) (t :inverse-video t)))
-   '(cursor ((t (:foreground "#000000" :background "#FFAA00"))))
-   '(font-lock-comment-face ((t (:foreground "#666666"))) t)
-   '(font-lock-comment-delimiter-face ((t (:foreground "#666666"))))
-   '(font-lock-number-face ((t (:foreground "#a999bb"))))
-   '(completions-highlight ((t (:foreground "#000000" :background "#FFCCAA"))))
-   )
-  (enable-theme 'zenburn))
+			 ("zenburn-cyan"     . "#93c6e3")
+			 ))
+	:config
+	(load-theme 'zenburn t)
+	(custom-theme-set-faces
+		'zenburn
+		'(region ((t (:background "#491759" :extend t)) (t :inverse-video t)))
+		'(cursor ((t (:foreground "#000000" :background "#FFAA00"))))
+		'(font-lock-comment-face ((t (:foreground "#666666"))) t)
+		'(font-lock-comment-delimiter-face ((t (:foreground "#666666"))))
+		'(font-lock-number-face ((t (:foreground "#a999bb"))))
+		'(completions-highlight ((t (:foreground "#000000" :background "#FFCCAA"))))
+		)
+	(enable-theme 'zenburn))
 
 ;; --------------------------- custom functions --------------------------------
 (defun smart-beginning-of-line ()
-"Move point to first non-whitespace character or beginning-of-line.
+	"Move point to first non-whitespace character or beginning-of-line.
 Move point to the first non-whitespace character on this line.
 If point was already at that position, move point to beginning of line."
-  (interactive) ; Use (interactive "^") in Emacs 23 to make shift-select work
-  (let ((oldpos (point)))
-    (beginning-of-line)
-    (and (= oldpos (point))
-	 (back-to-indentation))))
+	(interactive) ; Use (interactive "^") in Emacs 23 to make shift-select work
+	(let ((oldpos (point)))
+		(beginning-of-line)
+		(and (= oldpos (point))
+			(back-to-indentation))))
 
 (defun select-string ()
-"Select a string under cursor. String is considered as any sequence
+	"Select a string under cursor. String is considered as any sequence
 enclosed by \" ... \" characters, therefore, may
 actually became a place between strings instead"
- (interactive)
- (let (b1 b2)
-   (skip-chars-backward "^\"")
-   (setq b1 (point))
-   (skip-chars-forward "^\"")
-   (setq b2 (point))
-   (set-mark b1)))
+	(interactive)
+	(let (b1 b2)
+		(skip-chars-backward "^\"")
+		(setq b1 (point))
+		(skip-chars-forward "^\"")
+		(setq b2 (point))
+		(set-mark b1)))
 
 (defun mark-whole-word ()
-  "Like mark-word, but the whole word from the beginning"
-  (interactive)
-  (backward-word)
-  (mark-word))
+	"Like mark-word, but the whole word from the beginning"
+	(interactive)
+	(backward-word)
+	(mark-word))
 
 (defun comment-or-uncomment-region-or-line ()
-"Comments or uncomments the region or the current line if there's no active region."
+	"Comments or uncomments the region or the current line if there's no active region."
     (interactive)
     (let (beg end)
         (if (region-active-p)
@@ -136,8 +137,8 @@ actually became a place between strings instead"
 ;;     (setq exec-path (split-string path-from-shell path-separator))))
 
 (defun prev-window ()
-  (interactive)
-  (other-window -1))
+	(interactive)
+	(other-window -1))
 
 ;; (defun toggle-flymake-diagnostics ()
 ;;   (interactive)
@@ -148,23 +149,30 @@ actually became a place between strings instead"
 ;;         (t (flymake-show-buffer-diagnostics))))
 
 (defun close-flymake-diagnostics ()
-  (interactive)
-  (cond ((eq (flymake--diagnostics-buffer-name) (window-buffer (selected-window)))
-         (delete-window (get-buffer-window (flymake--diagnostics-buffer-name))))
+	(interactive)
+	(cond ((eq (flymake--diagnostics-buffer-name) (window-buffer (selected-window)))
+			  (delete-window (get-buffer-window (flymake--diagnostics-buffer-name))))
         ((get-buffer-window (flymake--diagnostics-buffer-name))
-         (delete-window (get-buffer-window (flymake--diagnostics-buffer-name))))
+			(delete-window (get-buffer-window (flymake--diagnostics-buffer-name))))
         (t (delete-window (get-buffer-window (flymake--diagnostics-buffer-name))))))
 
 (defun flymake-show-buffer-diagnostics-focus ()
-  (interactive)
-  (flymake-show-buffer-diagnostics)
-  (select-window (get-buffer-window (flymake--diagnostics-buffer-name))))
+	(interactive)
+	(flymake-show-buffer-diagnostics)
+	(select-window (get-buffer-window (flymake--diagnostics-buffer-name))))
 
 (defun cycle-fill-column ()
 	(interactive)
 	(cond
 		((eq fill-column 100) (setq fill-column 120) (message "Setting fill-column to 120"))
 		((eq fill-column 120) (setq fill-column 100) (message "Setting fill-column to 100"))))
+
+(defun my-save-word ()
+	(interactive)
+	(let ((current-location (point))
+			 (word (flyspell-get-word)))
+		(when (consp word)
+			(flyspell-do-correct 'save nil (car word) current-location (cadr word) (caddr word) current-location))))
 
 ;; --------------------------- keybindings and mouse ---------------------------
 ;; TODO: replace f1 with help (eldoc show info custom function)
@@ -185,7 +193,7 @@ actually became a place between strings instead"
 (global-set-key [M-f9] 'cycle-fill-column)
 ;; (global-set-key [M-f9] ') ;; todo: indent guides? also KDE seems to use it
 ;; f10 - default emacs menu
-;; f11 - OS fullscreen
+;; f11 - OS full screen
 ;; flymake keys
 (define-key prog-mode-map [f12] 'flymake-mode)
 (define-key prog-mode-map [S-f12] 'flymake-show-buffer-diagnostics-focus)
@@ -203,6 +211,7 @@ actually became a place between strings instead"
 (global-set-key (kbd "C-c k") 'kill-region)
 (global-set-key (kbd "C-c w") 'mark-whole-word)
 (global-set-key (kbd "C-c s") 'select-string)
+(global-set-key (kbd "C-c i") 'my-save-word)
 ;; (global-set-key [M-up]   (lambda () (interactive) (scroll-down 4)))
 ;; (global-set-key [M-down] (lambda () (interactive) (scroll-up 4)))
 ;; (global-set-key [?\s-/]       'comment-or-uncomment-region-or-line)
@@ -217,19 +226,19 @@ actually became a place between strings instead"
 ;; (global-set-key (kbd "s-<up>")    'windmove-up)              ; move to upper window
 ;; (global-set-key (kbd "s-<down>")  'windmove-down)          ; move to lower window
 
-; Buffers manipulation
+										; Buffers manipulation
 ;; (global-set-key (kbd "<C-tab>") 'next-buffer)
 ;; (global-set-key (kbd "<C-S-iso-lefttab>") 'previous-buffer)
 ;; (global-set-key (kbd "C-;") 'company-complete)
 ;; Yank menu
 (global-set-key (kbd "C-c C-y") '(lambda ()
-    (interactive) (popup-menu 'yank-menu)))
+									 (interactive) (popup-menu 'yank-menu)))
 
 ;; replace buffer-menu with ibuffer
 (global-set-key (kbd "C-x C-b") #'ibuffer)
 
 (setq mouse-wheel-scroll-amount '(1 ((shift) . 1))) ;; one line at a time
-;(setq mouse-wheel-progressive-speed nil) ;; don't accelerate scrolling
+										;(setq mouse-wheel-progressive-speed nil) ;; don't accelerate scrolling
 
 ;; -------------------------- behavior -----------------------------------------
 ;; mouse integration in terminal
@@ -261,9 +270,9 @@ actually became a place between strings instead"
 ;; (setq indent-line-function 'insert-tab)
 
 (add-hook 'text-mode-hook
-      (lambda() (setq indent-line-function 'insert-tab)))
+    (lambda() (setq indent-line-function 'insert-tab)))
 
-; Treat 'y' or <CR> as yes, 'n' as no.
+										; Treat 'y' or <CR> as yes, 'n' as no.
 (fset 'yes-or-no-p 'y-or-n-p)
 (define-key query-replace-map [return] 'act)
 (define-key query-replace-map [?\C-m] 'act)
@@ -274,30 +283,30 @@ actually became a place between strings instead"
 
 ;; Put backup files neatly away
 (let ((backup-dir "~/.backups-emacs/backups")
-      (auto-saves-dir "~/.backups-emacs/auto-saves/"))
-  (dolist (dir (list backup-dir auto-saves-dir))
-    (when (not (file-directory-p dir))
-      (make-directory dir t)))
-  (setq backup-directory-alist `(("." . ,backup-dir))
+		 (auto-saves-dir "~/.backups-emacs/auto-saves/"))
+	(dolist (dir (list backup-dir auto-saves-dir))
+		(when (not (file-directory-p dir))
+			(make-directory dir t)))
+	(setq backup-directory-alist `(("." . ,backup-dir))
         auto-save-file-name-transforms `((".*" ,auto-saves-dir t))
         auto-save-list-file-prefix (concat auto-saves-dir ".saves-")
         tramp-backup-directory-alist `((".*" . ,backup-dir))
         tramp-auto-save-directory auto-saves-dir))
 
 (setq backup-by-copying t    ; Don't delink hardlinks
-      delete-old-versions t  ; Clean up the backups
-      version-control t      ; Use version numbers on backups,
-      kept-new-versions 5    ; keep some new versions
-      kept-old-versions 2)   ; and some old ones, too
+    delete-old-versions t  ; Clean up the backups
+    version-control t      ; Use version numbers on backups,
+    kept-new-versions 5    ; keep some new versions
+    kept-old-versions 2)   ; and some old ones, too
 
 ;; auto-install treesit libraries
 (use-package treesit-auto
-  :ensure t
-  :custom
-  (treesit-auto-install 'prompt)
-  :config
-  (treesit-auto-add-to-auto-mode-alist 'all)
-  (global-treesit-auto-mode))
+	:ensure t
+	:custom
+	(treesit-auto-install 'prompt)
+	:config
+	(treesit-auto-add-to-auto-mode-alist 'all)
+	(global-treesit-auto-mode))
 
 ;; (defun flymake-after-change-function (start stop _len)
 ;;   "Start syntax check for current buffer if it isn't already running."
@@ -314,50 +323,50 @@ actually became a place between strings instead"
 ;; (setq flymake-start-syntax-check-on-newline t)
 ;; (setq flymake-no-changes-timeout 1)
 (use-package eglot
-  :config
-  (setq-default eglot-workspace-configuration
-                '((:pylsp . (:plugins (
-                             :pylint (:enabled t)
-                             :pycodestyle (:enabled nil)
-                             :mccabe (:enabled nil)
-                             :pyflakes (:enabled t)
-                             :flake8 (:enabled t)
-                             :ruff (:enabled nil)
-                             :pydocstyle (:enabled nil)
-                             :yapf (:enabled nil)
-                             :autopep8 (:enabled nil)
-                             :mypy (:enabled t)
-										  )))))
-  ;; (setq eglot-extend-to-xref t)
-  :hook
-  (prog-mode . eglot-ensure))
+	:config
+	(setq-default eglot-workspace-configuration
+        '((:pylsp . (:plugins (
+								  :pylint (:enabled t)
+								  :pycodestyle (:enabled nil)
+								  :mccabe (:enabled nil)
+								  :pyflakes (:enabled t)
+								  :flake8 (:enabled t)
+								  :ruff (:enabled nil)
+								  :pydocstyle (:enabled nil)
+								  :yapf (:enabled nil)
+								  :autopep8 (:enabled nil)
+								  :mypy (:enabled t)
+								  )))))
+	;; (setq eglot-extend-to-xref t)
+	:hook
+	(prog-mode . eglot-ensure))
 
 (add-hook 'python-mode-hook
-		  (lambda ()
-			(setq indent-tabs-mode nil)
-			(setq tab-width 4)
-			(setq python-indent 4)))
+	(lambda ()
+		(setq indent-tabs-mode nil)
+		(setq tab-width 4)
+		(setq python-indent 4)))
 
 (add-to-list 'major-mode-remap-alist '(python-mode . python-ts-mode))
 
 ;; c/c++ style settings
 (defun linux-c-mode ()
-  (interactive)
-  (c-mode)
-  (setq c-indent-level 4)
-  (setq c-brace-imaginary-offset 0)
-  (setq c-brace-offset -4)
-  (setq c-argdecl-indent 4)
-  (setq c-label-offset -4)
-  (setq c-continued-statement-offset 4)
-  (setq c-set-offset 'substatement-open 0)
-  (setq indent-tabs-mode nil)
-  (setq tab-width 4))
+	(interactive)
+	(c-mode)
+	(setq c-indent-level 4)
+	(setq c-brace-imaginary-offset 0)
+	(setq c-brace-offset -4)
+	(setq c-argdecl-indent 4)
+	(setq c-label-offset -4)
+	(setq c-continued-statement-offset 4)
+	(setq c-set-offset 'substatement-open 0)
+	(setq indent-tabs-mode nil)
+	(setq tab-width 4))
 
 (setq c-default-style "linux"
-      c-basic-offset 4
-      tab-width 4
-      indent-tabs-mode nil)
+    c-basic-offset 4
+    tab-width 4
+    indent-tabs-mode nil)
 
 (setq lisp-indent-offset 4)
 
@@ -371,32 +380,58 @@ actually became a place between strings instead"
 
 ;; run garbage collect when emacs loses focus
 (add-function :after
-              after-focus-change-function
-              (lambda () (unless (frame-focus-state) (garbage-collect))))
+    after-focus-change-function
+    (lambda () (unless (frame-focus-state) (garbage-collect))))
 
 ;; enable C-x C-u: upcase-region
 ;; (put 'upcase-region 'disabled nil)
 
 (use-package helm
-  :ensure t)
+	:ensure t)
 
 (use-package marginalia
-  :ensure t
-  :init
-  (marginalia-mode))
+	:ensure t
+	:init
+	(marginalia-mode))
 
 (use-package imenu-list
-  :ensure t)
+	:ensure t)
 
 (use-package exec-path-from-shell
-  :ensure t
-  :config
-  (when (eq system-type 'darwin)
-	(exc-path-from-shell-initialize)))
+	:ensure t
+	:config
+	(when (eq system-type 'darwin)
+		(exc-path-from-shell-initialize)))
 
 ;; (use-package direnv
 ;;   :ensure t
 ;;   :config (direnv-mode))
 
 (use-package envrc
-  :hook (after-init . envrc-global-mode))
+	:hook (after-init . envrc-global-mode))
+
+(use-package flyspell
+	:hook
+	(emacs-lisp-mode . flyspell-prog-mode)
+	(prog-mode . flyspell-prog-mode)
+	(org-mode . flyspell-mode)
+	:custom
+	(ispell-program-name "aspell")
+	;; Default dictionary. To change do M-x ispell-change-dictionary RET.
+	;; (aspell-dictionary "en_GB-ise-wo_accents")
+	(aspell-program-name "/usr/bin/aspell")
+	;; (ispell-dictionary "en_GB-ise-wo_accents")
+	(ispell-program-name "/usr/bin/aspell"))
+	;; :config
+	;; (add-hook 'org-mode-hook 'flyspell-mode)
+	;; ;; Enable Flyspell program mode for emacs lisp mode, which highlights all misspelled words in comments and strings.
+	;; (add-hook 'emacs-lisp-mode-hook 'flyspell-prog-mode))
+
+;; (use-package flyspell-correct
+;;   :bind ("C-;" . flyspell-correct-wrapper))
+
+;; (use-package flycheck-aspell
+;; 	:ensure t
+;; 	:config
+;; 	(setq ispell-program-name "aspell")
+;; 	:hook (text-mode . flymake-aspell-setup))
