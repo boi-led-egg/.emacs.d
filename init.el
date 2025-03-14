@@ -409,6 +409,7 @@ actually became a place between strings instead"
 ;;   :config (direnv-mode))
 
 (use-package envrc
+	:ensure t
 	:hook (after-init . envrc-global-mode))
 
 (use-package flyspell
