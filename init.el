@@ -272,8 +272,9 @@ actually became a place between strings instead"
 (add-hook 'text-mode-hook
     (lambda() (setq indent-line-function 'insert-tab)))
 
-										; Treat 'y' or <CR> as yes, 'n' as no.
+;; Treat 'y' or <CR> as yes, 'n' as no.
 (fset 'yes-or-no-p 'y-or-n-p)
+;; (setq use-short-answers t)
 (define-key query-replace-map [return] 'act)
 (define-key query-replace-map [?\C-m] 'act)
 
@@ -401,7 +402,7 @@ actually became a place between strings instead"
 	:ensure t
 	:config
 	(when (eq system-type 'darwin)
-		(exc-path-from-shell-initialize)))
+		(exec-path-from-shell-initialize)))
 
 ;; (use-package direnv
 ;;   :ensure t
@@ -435,3 +436,5 @@ actually became a place between strings instead"
 ;; 	:config
 ;; 	(setq ispell-program-name "aspell")
 ;; 	:hook (text-mode . flymake-aspell-setup))
+
+;; (setq confirm-kill-emacs 'yes-or-no-p)
