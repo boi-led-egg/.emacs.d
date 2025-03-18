@@ -255,7 +255,7 @@ actually became a place between strings instead"
 
 (autoload 'ibuffer "ibuffer" "List buffers." t)
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
-;; (electric-indent-mode -1)
+(electric-indent-mode -1)
 (setq save-interprogram-paste-before-kill t)
 (global-auto-revert-mode 1)
 ;; (when window-system (set-exec-path-from-shell-PATH))
@@ -439,3 +439,12 @@ actually became a place between strings instead"
 ;; 	:hook (text-mode . flymake-aspell-setup))
 
 ;; (setq confirm-kill-emacs 'yes-or-no-p)
+;; (setq imenu-flatten 'prefix)
+;; (defun test-completion-fn ()
+;; 	(interactive)
+;; 	(completing-read
+;; 		"Complete a foo: "
+;; 		'(("foobar1" 1) ("barfoo" 2) ("foobaz" 3) ("foobar2" 4))
+;; 		nil t "fo"))
+
+;; (global-set-key (kbd "C-c t") 'test-completion-fn)
