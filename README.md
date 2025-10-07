@@ -1,5 +1,5 @@
 setting up language server
-	pip install "python-lsp-server[all]"
+	pip install "python-lsp-server[all]" python-lsp-ruff ruff pylsp-mypy
 	pip install pylsp-mypy
 setting upo spell checking
 	apt/brew install ispell
@@ -10,11 +10,19 @@ setting up direnv (automatic python venv)
 	or add to .zshrc
 		eval "$(direnv hook zsh)"
 	in the python project create a venv
-	   python3 -m venv venv
+	    python3 -m venv venv
 	in the python project dir create .envrc with
-	   layout python3
-	   source venv/bin/activate
-	and run "direnv allow ."
+	    layout python3
+	    source venv/bin/activate
+	activate envrc
+	    "direnv allow ."
+optionally install mypy stubs
+     mypy --install-types
+install languagetool
+     wget https://languagetool.org/download/LanguageTool-stable.zip
+     unzip LanguageTool-stable.zip -d ~/.emacs.d/
+     mv .emacs.d/LanguageTool-* ~/.emacs.d/LanguageTool
+     TODO: https://languagetool.org/download/ngram-data/
 
 setting up project-specific configuration (.dir-locals.el)
 	...

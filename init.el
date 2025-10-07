@@ -185,12 +185,12 @@ actually became a place between strings instead"
 ;; (global-set-key [S-f5] 'flyspell-mode)
 ;; (global-set-key [f6] ')
 ;; (global-set-key [f7] ')
-(global-set-key [f8] 'imenu-list)
+;; (global-set-key [f8] 'imenu-list)
 ;; (global-set-key [C-f8] 'imenu-list-quit-window)
 ;; display modes
 (global-set-key [f9] 'display-line-numbers-mode)
 (global-set-key [S-f9] 'whitespace-mode)
-(global-set-key [M-f9] 'cycle-fill-column)
+(global-set-key [f8] 'cycle-fill-column)
 ;; (global-set-key [M-f9] ') ;; todo: indent guides? also KDE seems to use it
 ;; f10 - default emacs menu
 ;; f11 - OS full screen
@@ -250,7 +250,7 @@ actually became a place between strings instead"
 ;; suppress useless help header message in completion buffer
 (setq completion-show-help nil)
 (setq completions-detailed t)
-(setopt tab-always-indent 'complete)
+;; (setopt tab-always-indent 'complete)
 (setq read-file-name-completion-ignore-case t)
 
 (autoload 'ibuffer "ibuffer" "List buffers." t)
@@ -263,7 +263,7 @@ actually became a place between strings instead"
 ;; suppress spam from natice compilation
 ;; (setq native-comp-async-report-warnings-errors 'silent)
 
-(setq-default indent-tabs-mode t)
+(setq-default indent-tabs-mode nil)
 (setq-default tab-width 4)
 (setq cmake-tab-width 4)
 
@@ -327,12 +327,12 @@ actually became a place between strings instead"
 	:config
 	(setq-default eglot-workspace-configuration
         '((:pylsp . (:plugins (
-								  :pylint (:enabled t)
+								  :pylint (:enabled nil)
 								  :pycodestyle (:enabled nil)
 								  :mccabe (:enabled nil)
-								  :pyflakes (:enabled t)
-								  :flake8 (:enabled t)
-								  :ruff (:enabled nil)
+								  :pyflakes (:enabled nil)
+								  :flake8 (:enabled nil)
+								  :ruff (:enabled t)
 								  :pydocstyle (:enabled nil)
 								  :yapf (:enabled nil)
 								  :autopep8 (:enabled nil)
@@ -340,7 +340,7 @@ actually became a place between strings instead"
 								  )))))
 	;; (setq eglot-extend-to-xref t)
 	:hook
-	(prog-mode . eglot-ensure))
+	(python-mode . eglot-ensure))
 
 (add-hook 'python-mode-hook
 	(lambda ()
@@ -349,6 +349,8 @@ actually became a place between strings instead"
 		(setq python-indent 4)))
 
 (add-to-list 'major-mode-remap-alist '(python-mode . python-ts-mode))
+(add-to-list 'major-mode-remap-alist '(c-mode . c-ts-mode))
+(add-to-list 'major-mode-remap-alist '(c++-mode . c++-ts-mode))
 
 ;; c/c++ style settings
 (defun linux-c-mode ()
@@ -370,12 +372,13 @@ actually became a place between strings instead"
     indent-tabs-mode nil)
 
 (setq lisp-indent-offset 4)
-
+(setq c-ts-mode-indent-offset 4)
 ;; Modify C/C++ syntax tables to thread underscore sign '_' as a part of word
 ;; (add-hook 'c-mode-common-hook 'linux-c-mode)
-(add-hook 'c-mode-hook  (lambda () (modify-syntax-entry ?_ "w")))
-(add-hook 'c++-mode-hook  (lambda () (modify-syntax-entry ?_ "w")))
-(add-hook 'python-ts-mode-hook  (lambda () (modify-syntax-entry ?_ "w")))
+;; (add-hook 'c-mode-hook  (lambda () (modify-syntax-entry ?_ "w")))
+;; (add-hook 'c++-mode-hook  (lambda () (modify-syntax-entry ?_ "w")))
+;; (add-hook 'python-ts-mode-hook  (lambda () (modify-syntax-entry ?_ "w")))
+(add-hook 'prog-mode-hook  (lambda () (modify-syntax-entry ?_ "w")))
 (modify-syntax-entry ?- "w" emacs-lisp-mode-syntax-table)
 ;; (add-hook 'c++-mode-hook (lambda () (setq c-set-offset 'substatement-open 0)))
 
@@ -395,8 +398,8 @@ actually became a place between strings instead"
 	:init
 	(marginalia-mode))
 
-(use-package imenu-list
-	:ensure t)
+;; (use-package imenu-list
+;; 	:ensure t)
 
 (use-package exec-path-from-shell
 	:ensure t
@@ -412,39 +415,21 @@ actually became a place between strings instead"
 	:ensure t
 	:hook (after-init . envrc-global-mode))
 
-(use-package flyspell
-	:hook
-	(emacs-lisp-mode . flyspell-prog-mode)
-	(prog-mode . flyspell-prog-mode)
-	(org-mode . flyspell-mode)
-	:custom
-	(ispell-program-name "aspell")
-	;; Default dictionary. To change do M-x ispell-change-dictionary RET.
-	;; (aspell-dictionary "en_GB-ise-wo_accents")
-	(aspell-program-name "/usr/bin/aspell")
-	;; (ispell-dictionary "en_GB-ise-wo_accents")
-	(ispell-program-name "/usr/bin/aspell"))
-	;; :config
-	;; (add-hook 'org-mode-hook 'flyspell-mode)
-	;; ;; Enable Flyspell program mode for emacs lisp mode, which highlights all misspelled words in comments and strings.
-	;; (add-hook 'emacs-lisp-mode-hook 'flyspell-prog-mode))
-
-;; (use-package flyspell-correct
-;;   :bind ("C-;" . flyspell-correct-wrapper))
-
-;; (use-package flycheck-aspell
-;; 	:ensure t
-;; 	:config
-;; 	(setq ispell-program-name "aspell")
-;; 	:hook (text-mode . flymake-aspell-setup))
-
-;; (setq confirm-kill-emacs 'yes-or-no-p)
-;; (setq imenu-flatten 'prefix)
-;; (defun test-completion-fn ()
-;; 	(interactive)
-;; 	(completing-read
-;; 		"Complete a foo: "
-;; 		'(("foobar1" 1) ("barfoo" 2) ("foobaz" 3) ("foobar2" 4))
-;; 		nil t "fo"))
-
-;; (global-set-key (kbd "C-c t") 'test-completion-fn)
+(use-package languagetool
+    :ensure t
+    :defer t
+    :commands (languagetool-check
+               languagetool-clear-suggestions
+               languagetool-correct-at-point
+               languagetool-correct-buffer
+               languagetool-set-language
+               languagetool-server-mode
+               languagetool-server-start
+               languagetool-server-stop)
+    :config
+    (setq languagetool-java-arguments '("-Dfile.encoding=UTF-8")
+          languagetool-console-command "~/.emacs.d/LanguageTool/languagetool-commandline.jar"
+          languagetool-server-command "~/.emacs.d/LanguageTool/languagetool-server.jar")
+    :bind (("C-c l c" . languagetool-check)
+           ("C-c l e" . languagetool-clear-suggestions)
+           ("C-c l p" . languagetool-correct-at-point)))
